@@ -3,6 +3,7 @@ package com.pife.juego;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -15,12 +16,16 @@ public class PantallaNivelInfinito implements Screen {
     private SpriteBatch batch;
     private FitViewport viewport;
 
-    private Texture fondoTex;
-    private Sprite fondo;
+    private Texture fondoTex1;
+    private Texture fondoTex2;
 
     private Texture personajeTex;
     private Sprite personaje;
-    private float velocidad = 3f; // velocidad de movimiento vertical
+
+    private float velocidad = 3f;        // velocidad personaje
+    private float fondo1X;               // posición horizontal del primer fondo
+    private float fondo2X;               // posición horizontal del segundo fondo
+    private float velocidadFondo = 1.5f; // velocidad del fondo
 
     public PantallaNivelInfinito(Game game) {
         this.game = game;
@@ -31,73 +36,67 @@ public class PantallaNivelInfinito implements Screen {
         batch = new SpriteBatch();
         viewport = new FitViewport(8, 5);
 
-        // Fondo
-        fondoTex = new Texture("FondoNivelesQuokky.png");
-        fondo = new Sprite(fondoTex);
+        // Fondos
+        fondoTex1 = new Texture("FondoNivelesQuokky.png");
+        fondoTex2 = new Texture("Fondo-Reves.png");
 
-        // Escalar el fondo para llenar el viewport sin deformarse
-        float scaleX = viewport.getWorldWidth() / fondo.getWidth();
-        float scaleY = viewport.getWorldHeight() / fondo.getHeight();
-        float scale = Math.max(scaleX, scaleY); // máximo para cubrir
-        fondo.setSize(fondo.getWidth() * scale, fondo.getHeight() * scale);
-
-        // Centrar el fondo
-        fondo.setPosition(
-            (viewport.getWorldWidth() - fondo.getWidth()) / 2f,
-            (viewport.getWorldHeight() - fondo.getHeight()) / 2f
-        );
+        // Inicializar posiciones
+        fondo1X = 0;
+        fondo2X = viewport.getWorldWidth();
 
         // Personaje
         personajeTex = new Texture("Personaje-Quokky.png");
         personaje = new Sprite(personajeTex);
 
-        float personajeAncho = 1.5f;
-        float personajeAlto = 2f;
-
-        personaje.setSize(personajeAncho, personajeAlto);
-
-        // Izquierda y centrado vertical
-        float x = 0.2f;
-        float y = (5f - personajeAlto) / 2f;
-
-        personaje.setPosition(x, y);
+        personaje.setSize(1.5f, 2f);
+        personaje.setPosition(0.2f, (5f - 2f) / 2f);
     }
 
     @Override
     public void render(float delta) {
         ScreenUtils.clear(0, 0, 0, 1);
 
-        // MOVIMIENTO del personaje
-        if (Gdx.input.isKeyPressed(com.badlogic.gdx.Input.Keys.UP)) {
+        // MOVIMIENTO PERSONAJE
+
+        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
             personaje.setY(personaje.getY() + velocidad * delta);
-                Gdx.app.log("INPUT", "ARRIBA");
-
         }
 
-        if (Gdx.input.isKeyPressed(com.badlogic.gdx.Input.Keys.DOWN)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
             personaje.setY(personaje.getY() - velocidad * delta);
-            Gdx.app.log("INPUT", "ABAJO");
         }
 
-        // Limites para el movimiento
+        // Límites
         if (personaje.getY() < 0) {
             personaje.setY(0);
         }
-
         if (personaje.getY() + personaje.getHeight() > viewport.getWorldHeight()) {
             personaje.setY(viewport.getWorldHeight() - personaje.getHeight());
         }
 
-        // DIBUJO
+        /* MOVIMIENTO FONDO */
+
+        fondo1X = fondo1X - velocidadFondo * delta;
+        fondo2X = fondo2X - velocidadFondo * delta;
+
+        if (fondo1X + viewport.getWorldWidth() <= 0) {
+            fondo1X = fondo2X + viewport.getWorldWidth();
+        }
+
+        if (fondo2X + viewport.getWorldWidth() <= 0) {
+            fondo2X = fondo1X + viewport.getWorldWidth();
+        }
+
+        /*DIBUJO */
+
         viewport.apply();
         batch.setProjectionMatrix(viewport.getCamera().combined);
-
         batch.begin();
 
         float worldWidth = viewport.getWorldWidth();
         float worldHeight = viewport.getWorldHeight();
 
-        float texRatio = (float) fondoTex.getHeight() / fondoTex.getWidth();
+        float texRatio = (float) fondoTex1.getHeight() / fondoTex1.getWidth();
         float worldRatio = worldHeight / worldWidth;
 
         float drawWidth, drawHeight;
@@ -110,17 +109,17 @@ public class PantallaNivelInfinito implements Screen {
             drawWidth = worldHeight / texRatio;
         }
 
-        float x = (worldWidth - drawWidth) / 2f;
         float y = (worldHeight - drawHeight) / 2f;
 
-        batch.draw(fondoTex, x, y, drawWidth, drawHeight);
+        // Dibujamos los dos fondos en cadena
+        batch.draw(fondoTex1, fondo1X, y, drawWidth, drawHeight);
+        batch.draw(fondoTex2, fondo2X, y, drawWidth, drawHeight);
+
+        // Personaje
         personaje.draw(batch);
 
         batch.end();
     }
-
-
-
 
     @Override
     public void resize(int width, int height) {
@@ -134,7 +133,8 @@ public class PantallaNivelInfinito implements Screen {
     @Override
     public void dispose() {
         batch.dispose();
-        fondoTex.dispose();
+        fondoTex1.dispose();
+        fondoTex2.dispose();
         personajeTex.dispose();
     }
 }
