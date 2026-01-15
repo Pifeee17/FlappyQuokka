@@ -40,7 +40,7 @@ public class PantallaNivelInfinito implements Screen {
         fondoTex1 = new Texture("FondoNivelesQuokky.png");
         fondoTex2 = new Texture("Fondo-Reves.png");
 
-        // Inicializar posiciones
+        // Posicion inicial
         fondo1X = 0;
         fondo2X = viewport.getWorldWidth();
 
@@ -58,6 +58,7 @@ public class PantallaNivelInfinito implements Screen {
 
         // MOVIMIENTO PERSONAJE
 
+    // Ordenador
         if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
             personaje.setY(personaje.getY() + velocidad * delta);
         }
@@ -66,13 +67,27 @@ public class PantallaNivelInfinito implements Screen {
             personaje.setY(personaje.getY() - velocidad * delta);
         }
 
-        // Límites
+    // Movil
+        float inclinacion = Gdx.input.getAccelerometerY(); // landscape
+        float umbral = 1f;
+
+        if (inclinacion > umbral) {
+            // subir
+            personaje.setY(personaje.getY() + velocidad * delta);
+        } else if (inclinacion < -umbral) {
+            // bajar
+            personaje.setY(personaje.getY() - velocidad * delta);
+        }
+
+// Límites
         if (personaje.getY() < 0) {
             personaje.setY(0);
         }
         if (personaje.getY() + personaje.getHeight() > viewport.getWorldHeight()) {
             personaje.setY(viewport.getWorldHeight() - personaje.getHeight());
         }
+
+
 
         /* MOVIMIENTO FONDO */
 
@@ -111,7 +126,7 @@ public class PantallaNivelInfinito implements Screen {
 
         float y = (worldHeight - drawHeight) / 2f;
 
-        // Dibujamos los dos fondos en cadena
+        // Bucle de los 2 fondos
         batch.draw(fondoTex1, fondo1X, y, drawWidth, drawHeight);
         batch.draw(fondoTex2, fondo2X, y, drawWidth, drawHeight);
 
