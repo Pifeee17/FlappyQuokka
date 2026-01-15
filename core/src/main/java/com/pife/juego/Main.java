@@ -19,6 +19,7 @@ public class Main extends Game {
     private Texture txtJugar, txtModos, txtOpciones, txtCreditos;
     private Sprite btnJugar, btnModos, btnOpciones, btnCreditos;
 
+
     @Override
     public void create() {
         batch = new SpriteBatch();
@@ -87,6 +88,8 @@ public class Main extends Game {
                 setScreen(new PantallaNivelInfinito(this)); // Cambia de pantalla
             }
         }
+
+
     }
 
     @Override

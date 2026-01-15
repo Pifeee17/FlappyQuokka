@@ -20,6 +20,7 @@ public class PantallaNivelInfinito implements Screen {
 
     private Texture personajeTex;
     private Sprite personaje;
+    private float velocidad = 3f; // velocidad de movimiento vertical
 
     public PantallaNivelInfinito(Game game) {
         this.game = game;
@@ -66,12 +67,33 @@ public class PantallaNivelInfinito implements Screen {
     public void render(float delta) {
         ScreenUtils.clear(0, 0, 0, 1);
 
+        // MOVIMIENTO del personaje
+        if (Gdx.input.isKeyPressed(com.badlogic.gdx.Input.Keys.UP)) {
+            personaje.setY(personaje.getY() + velocidad * delta);
+                Gdx.app.log("INPUT", "ARRIBA");
+
+        }
+
+        if (Gdx.input.isKeyPressed(com.badlogic.gdx.Input.Keys.DOWN)) {
+            personaje.setY(personaje.getY() - velocidad * delta);
+            Gdx.app.log("INPUT", "ABAJO");
+        }
+
+        // Limites para el movimiento
+        if (personaje.getY() < 0) {
+            personaje.setY(0);
+        }
+
+        if (personaje.getY() + personaje.getHeight() > viewport.getWorldHeight()) {
+            personaje.setY(viewport.getWorldHeight() - personaje.getHeight());
+        }
+
+        // DIBUJO
         viewport.apply();
         batch.setProjectionMatrix(viewport.getCamera().combined);
 
         batch.begin();
 
-        // recalcular escala y centrado en cada frame
         float worldWidth = viewport.getWorldWidth();
         float worldHeight = viewport.getWorldHeight();
 
@@ -81,25 +103,22 @@ public class PantallaNivelInfinito implements Screen {
         float drawWidth, drawHeight;
 
         if (texRatio > worldRatio) {
-            // textura más alta que el mundo → ancho igual al mundo, alto escalado
             drawWidth = worldWidth;
             drawHeight = worldWidth * texRatio;
         } else {
-            // textura más ancha que el mundo → alto igual al mundo, ancho escalado
             drawHeight = worldHeight;
             drawWidth = worldHeight / texRatio;
         }
 
-        // centramos el fondo
         float x = (worldWidth - drawWidth) / 2f;
         float y = (worldHeight - drawHeight) / 2f;
 
-        batch.draw(fondoTex, x, y, drawWidth, drawHeight); // dibujamos fondo
-
-        personaje.draw(batch); // personaje encima
+        batch.draw(fondoTex, x, y, drawWidth, drawHeight);
+        personaje.draw(batch);
 
         batch.end();
     }
+
 
 
 
