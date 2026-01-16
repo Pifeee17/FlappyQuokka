@@ -86,6 +86,12 @@ public class Main extends Game {
             if (btnJugar.getBoundingRectangle().contains(touch.x, touch.y)) {
                 Gdx.app.log("BOTON", "JUGAR");
                 setScreen(new PantallaNivelInfinito(this)); // Cambia de pantalla
+            } else  if (btnModos.getBoundingRectangle().contains(touch.x, touch.y)) {
+                Gdx.app.log("BOTON", "MODOS");
+            }else  if (btnOpciones.getBoundingRectangle().contains(touch.x, touch.y)) {
+                Gdx.app.log("BOTON", "OPCIONES");
+            }else  if (btnCreditos.getBoundingRectangle().contains(touch.x, touch.y)) {
+                Gdx.app.log("BOTON", "CREDITOS");
             }
         }
 

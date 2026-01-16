@@ -30,7 +30,7 @@ public class PantallaNivelInfinito implements Screen {
     private float fondo2X;
     private float velocidadFondo = 1.5f;
 
-    // Obstáculos estilo Flappy Bird
+
     private Array<Sprite> obstaculosArriba;
     private Array<Sprite> obstaculosAbajo;
     private Texture troncoVerticalTex;
@@ -60,8 +60,8 @@ public class PantallaNivelInfinito implements Screen {
         // Personaje
         personajeTex = new Texture("Personaje-Quokky.png");
         personaje = new Sprite(personajeTex);
-        personaje.setSize(1.5f, 2f);
-        personaje.setPosition(0.2f, (5f - 2f) / 2f);
+        personaje.setSize(0.75f, 0.75f);
+        personaje.setPosition(0.2f, (6f - 2f) / 2f);
 
         // Obstáculos
         obstaculosArriba = new Array<Sprite>();
@@ -71,6 +71,24 @@ public class PantallaNivelInfinito implements Screen {
         tiempoAcumulado = 0f;
         intervaloObstaculo = 1.5f;
         random = new Random();
+    }
+
+    private Rectangle getHitboxPersonaje() {
+        return new Rectangle(
+            personaje.getX() + personaje.getWidth() * 0.33f,   // centra el cuerpo (ignora cola)
+            personaje.getY() + personaje.getHeight() * 0.38f,  // sube el hitbox (incluye cabeza)
+            personaje.getWidth() * 0.34f,                      // ancho justo del cuerpo
+            personaje.getHeight() * 0.38f                      // altura real del personaje
+        );
+    }
+
+    private Rectangle getHitboxObstaculo(Sprite obst) {
+        return new Rectangle(
+            obst.getX() + obst.getWidth() * 0.15f,
+            obst.getY(),
+            obst.getWidth() * 0.7f,
+            obst.getHeight()
+        );
     }
 
     @Override
@@ -103,7 +121,7 @@ public class PantallaNivelInfinito implements Screen {
             personaje.setY(viewport.getWorldHeight() - personaje.getHeight());
         }
 
-        /* MOVIMIENTO FONDO */
+        // MOVIMIENTO FONDO
         fondo1X = fondo1X - velocidadFondo * delta;
         fondo2X = fondo2X - velocidadFondo * delta;
 
@@ -114,7 +132,7 @@ public class PantallaNivelInfinito implements Screen {
             fondo2X = fondo1X + viewport.getWorldWidth();
         }
 
-        /* GENERAR OBSTÁCULOS */
+        // GENERAR OBSTÁCULOS
         tiempoAcumulado = tiempoAcumulado + delta;
         if (tiempoAcumulado >= intervaloObstaculo) {
             tiempoAcumulado = 0;
@@ -138,7 +156,7 @@ public class PantallaNivelInfinito implements Screen {
             obstaculosArriba.add(obstArriba);
         }
 
-        /* MOVER Y ELIMINAR OBSTÁCULOS */
+        // MOVER Y ELIMINAR OBSTÁCULOS
         for (int i = 0; i < obstaculosAbajo.size; i = i + 1) {
             Sprite obst = obstaculosAbajo.get(i);
             obst.setX(obst.getX() - velocidadFondo * delta);
@@ -156,7 +174,7 @@ public class PantallaNivelInfinito implements Screen {
             }
         }
 
-        /* DIBUJO */
+        // DIBUJO
         viewport.apply();
         batch.setProjectionMatrix(viewport.getCamera().combined);
         batch.begin();
@@ -191,11 +209,15 @@ public class PantallaNivelInfinito implements Screen {
         batch.end();
 
         // Colisiones
-        Rectangle rPersonaje = personaje.getBoundingRectangle();
+        Rectangle rPersonaje = getHitboxPersonaje();
         for (int i = 0; i < obstaculosAbajo.size; i = i + 1) {
-            if (rPersonaje.overlaps(obstaculosAbajo.get(i).getBoundingRectangle()) ||
-                rPersonaje.overlaps(obstaculosArriba.get(i).getBoundingRectangle())) {
+            if (rPersonaje.overlaps(getHitboxObstaculo(obstaculosAbajo.get(i))) ||
+                rPersonaje.overlaps(getHitboxObstaculo(obstaculosArriba.get(i)))) {
                 System.out.println("¡Choque!");
+
+                game.setScreen(new PantallaGameOver(game)); //Cambiamos a la pantalla de GameOver al chocar
+
+                break;
             }
         }
     }
@@ -215,4 +237,3 @@ public class PantallaNivelInfinito implements Screen {
         troncoGrandeTex.dispose();
     }
 }
-
