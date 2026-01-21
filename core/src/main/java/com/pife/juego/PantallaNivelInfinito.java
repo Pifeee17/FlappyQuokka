@@ -15,7 +15,7 @@ import java.util.Random;
 
 public class PantallaNivelInfinito implements Screen {
 
-    private Game game;
+    private Main game;
     private SpriteBatch batch;
     private FitViewport viewport;
 
@@ -40,7 +40,7 @@ public class PantallaNivelInfinito implements Screen {
     private Random random;
     private float hueco = 1.5f;
 
-    public PantallaNivelInfinito(Game game) {
+    public PantallaNivelInfinito(Main Main) {
         this.game = game;
     }
 

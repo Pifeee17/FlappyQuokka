@@ -12,13 +12,13 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 
 public class PantallaGameOver implements Screen {
 
-    private Game game;
+    private Main game;
     private SpriteBatch batch;
     private Texture fondoGameOver;
     private Texture txtBoton;
     private FitViewport viewport;
     private Sprite btnReintentar, btnMenu;
-    public PantallaGameOver(Game game) {
+    public PantallaGameOver(Main game) {
         this.game = game;
     }
 
@@ -73,7 +73,7 @@ public class PantallaGameOver implements Screen {
                 game.setScreen(new PantallaNivelInfinito(game)); // Cambia de pantalla
             } else if (btnMenu.getBoundingRectangle().contains(touch.x, touch.y)) {
                 Gdx.app.log("BOTON", "MENÚ");
-                game.setScreen((Screen) new Main());
+                game.setScreen(new PantallaNivelInfinito(game));
             }
         }
     }
