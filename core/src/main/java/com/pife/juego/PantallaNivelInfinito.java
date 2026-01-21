@@ -69,7 +69,7 @@ public class PantallaNivelInfinito implements Screen {
         troncoVerticalTex = new Texture("tronco vertical.png");
         troncoGrandeTex = new Texture("tronco vertical mas largo.png");
         tiempoAcumulado = 0f;
-        intervaloObstaculo = 1.5f;
+        intervaloObstaculo = 2.5f;
         random = new Random();
     }
 

@@ -23,6 +23,7 @@ public class Main extends Game {
     BitmapFont font;
     Float factorEscaladoFuente;
     private Texture txtBotones;
+
     private Sprite btnJugar, btnModos, btnOpciones, btnCreditos;
 
     @Override
@@ -47,17 +48,18 @@ public class Main extends Game {
         btnCreditos = new Sprite(txtBotones);
 
         // Tamaño de botones
-        float w = 2f;
-        float h = 1f;
+        float w = 3f;
+        float h = 1f; // botón más pequeño para que quepan juntos
 
-        float x = im.getX() + 0.2f;
-        float yBase = im.getY() + im.getHeight() - 2.2f;
+        float x = 1f;
+        float yBase = 8f - 5f;
 
-        //Coordenadas Botones
         btnJugar.setBounds(x, yBase, w, h);
-        btnModos.setBounds(x, yBase - 0.7f, w, h);
-        btnOpciones.setBounds(x, yBase - 1.4f, w, h);
-        btnCreditos.setBounds(x, yBase - 2.1f, w, h);
+        btnModos.setBounds(x, yBase - 0.85f, w, h);
+        btnOpciones.setBounds(x, yBase - 1.7f, w, h);
+        btnCreditos.setBounds(x, yBase - 2.55f, w, h);
+
+
 
         //Poniendo la fuente
         // Se usa la fuente interna de libGDX
@@ -107,7 +109,6 @@ public class Main extends Game {
 
         // TEXTO DE LOS BOTONES
 
-        font.draw(batch, "JUGAR2", 2,2);
         font.draw(batch, "JUGAR", btnJugar.getX() + 0.35f, btnJugar.getY() + 0.65f);
         font.draw(batch, "MODOS", btnModos.getX() + 0.30f, btnModos.getY() + 0.65f);
         font.draw(batch, "OPCIONES", btnOpciones.getX() + 0.15f, btnOpciones.getY() + 0.65f);
@@ -133,6 +134,7 @@ public class Main extends Game {
                 setScreen(new PantallaNivelInfinito(this)); // Cambia de pantalla
             } else if (btnModos.getBoundingRectangle().contains(touch.x, touch.y)) {
                 Gdx.app.log("BOTON", "MODOS");
+                setScreen(new PantallaSeleccionModos(this)); //cambiamos a la pantalla del selector de modos
             } else if (btnOpciones.getBoundingRectangle().contains(touch.x, touch.y)) {
                 Gdx.app.log("BOTON", "OPCIONES");
             } else if (btnCreditos.getBoundingRectangle().contains(touch.x, touch.y)) {
