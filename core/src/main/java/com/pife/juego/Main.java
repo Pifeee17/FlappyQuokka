@@ -7,7 +7,7 @@ public class Main extends Game {
 
     @Override
     public void create() {
-        // Al iniciar el juego mostramos directamente el menú
+        //Mostramos el menú principal
         setScreen(new MenuPrincipal(this));
     }
 }
