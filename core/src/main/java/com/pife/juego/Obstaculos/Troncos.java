@@ -26,7 +26,7 @@ public class Troncos {
     public Troncos(FitViewport viewport) {
         this.viewport = viewport;
         texAbajo = new Texture("tronco vertical.png");
-        texArriba = new Texture("tronco vertical mas largo.png");
+        texArriba = new Texture("Enrredadera_Vertical.png");
     }
 
     public void update(float delta, float velocidad) {

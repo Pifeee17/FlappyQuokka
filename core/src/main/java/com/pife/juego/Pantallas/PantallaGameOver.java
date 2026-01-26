@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.pife.juego.Main;
+import com.pife.juego.Menus.MenuPrincipal;
 
 public class PantallaGameOver implements Screen {
 
@@ -73,7 +74,7 @@ public class PantallaGameOver implements Screen {
                 game.setScreen(new PantallaNivelInfinito(game)); // Cambia de pantalla
             } else if (btnMenu.getBoundingRectangle().contains(touch.x, touch.y)) {
                 Gdx.app.log("BOTON", "MENÚ");
-                game.setScreen(new PantallaNivelInfinito(game));
+                game.setScreen(new MenuPrincipal(game));
             }
         }
     }
