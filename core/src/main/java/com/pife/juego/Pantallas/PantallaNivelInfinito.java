@@ -1,8 +1,11 @@
 package com.pife.juego.Pantallas;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.pife.juego.Main;
 import com.pife.juego.Personajes.Quokky;
@@ -23,6 +26,9 @@ public class PantallaNivelInfinito implements Screen {
     private Quokky quokky;
     private Troncos troncos;
 
+    // Font para puntuación
+    private BitmapFont font;
+
     public PantallaNivelInfinito(Main game) {
         this.game = game;
         viewport = new FitViewport(8, 5);
@@ -41,6 +47,14 @@ public class PantallaNivelInfinito implements Screen {
         // Entidades
         quokky = new Quokky(viewport);
         troncos = new Troncos(viewport);
+
+        // Font para puntos usando la fuente de Main
+        font = game.fuente;
+
+        // Escalado de fuente según viewport y densidad
+        float dpiScale = (viewport.getWorldHeight() / Gdx.graphics.getHeight()) * Gdx.graphics.getDensity();
+        font.getData().setScale(dpiScale * 0.5f); // Ajusta 0.5f según lo grande que quieras el texto
+        font.setColor(Color.BLACK);
     }
 
     private void update(float delta) {
@@ -57,7 +71,7 @@ public class PantallaNivelInfinito implements Screen {
 
         // Entidades
         quokky.update(delta);
-        troncos.update(delta, velocidadFondo);
+        troncos.update(delta, velocidadFondo, quokky.getX());
 
         // Colisión
         if (troncos.colisiona(quokky.getHitbox())) {
@@ -78,6 +92,10 @@ public class PantallaNivelInfinito implements Screen {
         drawFondo();
         troncos.draw(batch);
         quokky.draw(batch);
+
+        // Dibujar puntuación arriba a la izquierda
+        font.draw(batch, "PUNTOS: " + troncos.getPuntos(), 0.1f, viewport.getWorldHeight() - 0.1f);
+
         batch.end();
     }
 
@@ -96,6 +114,10 @@ public class PantallaNivelInfinito implements Screen {
     @Override
     public void resize(int width, int height) {
         viewport.update(width, height, true);
+
+        // Reescalar fuente para que se vea consistente
+        float dpiScale = (viewport.getWorldHeight() / Gdx.graphics.getHeight()) * Gdx.graphics.getDensity();
+        font.getData().setScale(dpiScale * 0.5f);
     }
 
     @Override public void pause() {}
@@ -109,5 +131,6 @@ public class PantallaNivelInfinito implements Screen {
         fondoTex2.dispose();
         quokky.dispose();
         troncos.dispose();
+        // No se hace font.dispose() porque la fuente se comparte con Main
     }
 }

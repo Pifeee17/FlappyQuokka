@@ -30,16 +30,15 @@ public class MenuPrincipal implements Screen {
 
     public MenuPrincipal(Main game) {
         this.game = game;
+        font = game.fuente;
     }
 
     @Override
     public void show() {
 
+        Gdx.app.log("MENU", "MenuPrincipal cargado");
 
-            Gdx.app.log("MENU", "MenuPrincipal cargado");
-
-
-            batch = new SpriteBatch();
+        batch = new SpriteBatch();
 
         image = new Texture("Portada-Quokky.png");
         im = new Sprite(image);
@@ -70,11 +69,10 @@ public class MenuPrincipal implements Screen {
         btnOpciones.setBounds(x, yBase - 1.7f, w, h);
         btnCreditos.setBounds(x, yBase - 2.55f, w, h);
 
-        // Fuente
-        font = new BitmapFont();
+
         float dpiScale = Gdx.graphics.getDensity();
         factorEscaladoFuente = (viewport.getWorldHeight() / Gdx.graphics.getHeight()) * dpiScale;
-        font.getData().setScale(factorEscaladoFuente * 2);
+        font.getData().setScale(factorEscaladoFuente * 0.75f);
         font.setColor(Color.BLACK);
     }
 
@@ -93,10 +91,10 @@ public class MenuPrincipal implements Screen {
         btnCreditos.draw(batch);
 
         // Texto de botones
-        font.draw(batch, "JUGAR", btnJugar.getX() + 0.35f, btnJugar.getY() + 0.65f);
-        font.draw(batch, "MODOS", btnModos.getX() + 0.30f, btnModos.getY() + 0.65f);
-        font.draw(batch, "OPCIONES", btnOpciones.getX() + 0.15f, btnOpciones.getY() + 0.65f);
-        font.draw(batch, "CREDITOS", btnCreditos.getX() + 0.15f, btnCreditos.getY() + 0.65f);
+        font.draw(batch, "JUGAR", btnJugar.getX() + 1f, btnJugar.getY() + 0.65f);
+        font.draw(batch, "MODOS", btnModos.getX() + 1f, btnModos.getY() + 0.65f);
+        font.draw(batch, "OPCIONES", btnOpciones.getX() + 0.65f, btnOpciones.getY() + 0.65f);
+        font.draw(batch, "CREDITOS", btnCreditos.getX() + 0.65f, btnCreditos.getY() + 0.65f);
 
         batch.end();
 

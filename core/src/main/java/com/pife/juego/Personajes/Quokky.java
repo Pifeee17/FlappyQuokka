@@ -10,7 +10,6 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 public class Quokky {
-
     private Sprite sprite;
     private float velocidad = 3f;
     private FitViewport viewport;
@@ -25,7 +24,6 @@ public class Quokky {
     }
 
     public void update(float delta) {
-
         // Teclado
         if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
             sprite.setY(sprite.getY() + velocidad * delta);
@@ -63,5 +61,8 @@ public class Quokky {
     public void dispose() {
         sprite.getTexture().dispose();
     }
-}
 
+    public float getX() {
+        return sprite.getX();
+    }
+}
