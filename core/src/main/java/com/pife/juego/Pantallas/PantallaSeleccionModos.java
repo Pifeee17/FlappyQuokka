@@ -2,6 +2,7 @@ package com.pife.juego.Pantallas;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -20,10 +21,12 @@ public class PantallaSeleccionModos implements Screen {
     private Texture fondo;
     private Texture txtBoton;
     private Sprite btnArcade, btnNiveles;
+    private Float factorEscaladoFuente;
     private BitmapFont font;
 
     public PantallaSeleccionModos(Main game) {
         this.game = game;
+        font = game.fuente;
     }
 
     @Override
@@ -37,11 +40,13 @@ public class PantallaSeleccionModos implements Screen {
         btnArcade = new Sprite(txtBoton);
         btnNiveles = new Sprite(txtBoton);
 
-        btnArcade.setBounds(1.5f, 5f, 2f, 1f);
-        btnNiveles.setBounds(1.5f, 4f, 2f, 1f);
+        btnArcade.setBounds(1.15f, 5f, 3f, 2f);
+        btnNiveles.setBounds(1.15f, 4f, 3f, 2f);
 
-        font = new BitmapFont();
-        font.getData().setScale(0.03f);
+        float dpiScale = Gdx.graphics.getDensity();
+        factorEscaladoFuente = (viewport.getWorldHeight() / Gdx.graphics.getHeight()) * dpiScale;
+        font.getData().setScale(factorEscaladoFuente * 0.58f);
+        font.setColor(Color.WHITE);
     }
 
     @Override
@@ -55,8 +60,9 @@ public class PantallaSeleccionModos implements Screen {
         btnArcade.draw(batch);
         btnNiveles.draw(batch);
 
-        font.draw(batch, "MODO ARCADE", btnArcade.getX() + 0.25f, btnArcade.getY() + 0.65f);
-        font.draw(batch, "MODO POR NIVELES", btnNiveles.getX() + 0.05f, btnNiveles.getY() + 0.65f);
+        font.draw(batch, "SELECCIONA UN MODO", 1.15f, 8f - 1f);
+        font.draw(batch, "ARCADE", btnArcade.getX() + 1f, btnArcade.getY() + 1.1f);
+        font.draw(batch, "POR NIVELES", btnNiveles.getX() + 0.6f, btnNiveles.getY() + 1.1f);
         batch.end();
 
         if (Gdx.input.justTouched()) {

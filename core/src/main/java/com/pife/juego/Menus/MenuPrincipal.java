@@ -73,7 +73,7 @@ public class MenuPrincipal implements Screen {
         float dpiScale = Gdx.graphics.getDensity();
         factorEscaladoFuente = (viewport.getWorldHeight() / Gdx.graphics.getHeight()) * dpiScale;
         font.getData().setScale(factorEscaladoFuente * 0.75f);
-        font.setColor(Color.BLACK);
+        font.setColor(Color.WHITE);
     }
 
     @Override
@@ -105,8 +105,10 @@ public class MenuPrincipal implements Screen {
 
             if (btnJugar.getBoundingRectangle().contains(touch.x, touch.y)) {
                 game.setScreen(new PantallaNivelInfinito(game));
+                Gdx.app.log("BOTON", "JUGAR");
             } else if (btnModos.getBoundingRectangle().contains(touch.x, touch.y)) {
                 game.setScreen(new PantallaSeleccionModos(game));
+                Gdx.app.log("BOTON", "MODOS");
             } else if (btnOpciones.getBoundingRectangle().contains(touch.x, touch.y)) {
                 Gdx.app.log("BOTON", "OPCIONES");
             } else if (btnCreditos.getBoundingRectangle().contains(touch.x, touch.y)) {
