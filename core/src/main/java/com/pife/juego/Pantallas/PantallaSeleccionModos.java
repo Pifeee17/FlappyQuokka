@@ -11,6 +11,9 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.pife.juego.Main;
+import com.badlogic.gdx.Input;
+import com.pife.juego.Menus.MenuPrincipal;
+
 
 public class PantallaSeleccionModos implements Screen {
 
@@ -47,6 +50,8 @@ public class PantallaSeleccionModos implements Screen {
         factorEscaladoFuente = (viewport.getWorldHeight() / Gdx.graphics.getHeight()) * dpiScale;
         font.getData().setScale(factorEscaladoFuente * 0.58f);
         font.setColor(Color.WHITE);
+
+        Gdx.input.setCatchKey(Input.Keys.BACK, true);
     }
 
     @Override
@@ -73,11 +78,15 @@ public class PantallaSeleccionModos implements Screen {
                 Gdx.app.log("MODO", "ARCADE");
                 game.setScreen(new PantallaNivelInfinito(game));
             }
-
             if (btnNiveles.getBoundingRectangle().contains(touch.x, touch.y)) {
                 Gdx.app.log("MODO", "POR NIVELES");
                 // game.setScreen(new PantallaNiveles(game));
             }
+        }
+
+        //Con teclado la tecla Esc vuelve al menú principal y en movil la tecla de Volver del telefono vuelve al menú principal
+        if(Gdx.input.isKeyJustPressed(Input.Keys.BACK) || Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)){
+            game.setScreen(new MenuPrincipal(game));
         }
     }
 
