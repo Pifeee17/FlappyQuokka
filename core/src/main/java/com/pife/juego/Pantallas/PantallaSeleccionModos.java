@@ -23,7 +23,8 @@ public class PantallaSeleccionModos implements Screen {
 
     private Texture fondo;
     private Texture txtBoton;
-    private Sprite btnArcade, btnNiveles;
+    private Texture txtBotonVolver;
+    private Sprite btnArcade, btnNiveles, btnVolver;
     private Float factorEscaladoFuente;
     private BitmapFont font;
 
@@ -39,12 +40,16 @@ public class PantallaSeleccionModos implements Screen {
 
         fondo = new Texture("Fondo-Select-Modos.png");
         txtBoton = new Texture("Boton.png");
+        txtBotonVolver = new Texture("Boton_Volver.png");
+
 
         btnArcade = new Sprite(txtBoton);
         btnNiveles = new Sprite(txtBoton);
+        btnVolver = new Sprite(txtBotonVolver);
 
         btnArcade.setBounds(1.15f, 5f, 3f, 2f);
         btnNiveles.setBounds(1.15f, 4f, 3f, 2f);
+        btnVolver.setBounds(1.15f, 1f, 3f, 2f);
 
         float dpiScale = Gdx.graphics.getDensity();
         factorEscaladoFuente = (viewport.getWorldHeight() / Gdx.graphics.getHeight()) * dpiScale;
@@ -64,6 +69,7 @@ public class PantallaSeleccionModos implements Screen {
         batch.draw(fondo, 0, 0, 5, 8);
         btnArcade.draw(batch);
         btnNiveles.draw(batch);
+        btnVolver.draw(batch);
 
         font.draw(batch, "SELECCIONA UN MODO", 1.15f, 8f - 1f);
         font.draw(batch, "ARCADE", btnArcade.getX() + 1f, btnArcade.getY() + 1.1f);
