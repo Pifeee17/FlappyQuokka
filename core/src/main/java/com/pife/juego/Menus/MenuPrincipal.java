@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.pife.juego.Main;
 import com.pife.juego.Pantallas.PantallaNivelInfinito;
+import com.pife.juego.Pantallas.PantallaOpciones;
 import com.pife.juego.Pantallas.PantallaSeleccionModos;
 
 public class MenuPrincipal implements Screen {
@@ -118,6 +119,7 @@ public class MenuPrincipal implements Screen {
                 Gdx.app.log("BOTON", "MODOS");
             } else if (btnOpciones.getBoundingRectangle().contains(touch.x, touch.y)) {
                 Gdx.app.log("BOTON", "OPCIONES");
+                game.setScreen(new PantallaOpciones(game));
             } else if (btnCreditos.getBoundingRectangle().contains(touch.x, touch.y)) {
                 Gdx.app.log("BOTON", "CREDITOS");
             }

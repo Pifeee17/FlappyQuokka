@@ -23,6 +23,8 @@ public class Main extends Game {
     // Música (UNA sola para todo el juego)
     private Music musicaActual;
     private String musicaActualPath;
+    private String musicaObjetivoPath;
+
 
     @Override
     public void create() {
@@ -50,6 +52,10 @@ public class Main extends Game {
 
     // --- MUSICA GLOBAL ---
     public void reproducirMusica(String archivo) {
+
+        // Guardamos cuál es la música que DEBERÍA sonar en esta pantalla
+        musicaObjetivoPath = archivo;
+
         boolean musicaOn = prefs.getBoolean("musicaOn", true);
         float volumen = prefs.getFloat("volumen", 0.5f);
 
@@ -58,14 +64,14 @@ public class Main extends Game {
             return;
         }
 
-        // Si ya está sonando esa pista, no recrear
         if (musicaActual != null && archivo.equals(musicaActualPath)) {
             musicaActual.setVolume(volumen);
-            if (!musicaActual.isPlaying()) musicaActual.play();
+            if (!musicaActual.isPlaying()) {
+                musicaActual.play();
+            }
             return;
         }
 
-        // Cambiar pista
         pararMusica();
         musicaActualPath = archivo;
         musicaActual = Gdx.audio.newMusic(Gdx.files.internal(archivo));
@@ -74,6 +80,7 @@ public class Main extends Game {
         musicaActual.play();
     }
 
+
     public void setMusicaActiva(boolean activa) {
         prefs.putBoolean("musicaOn", activa);
         prefs.flush();
@@ -81,10 +88,20 @@ public class Main extends Game {
         if (!activa) {
             pararMusica();
         } else {
-            // Si hay pista cargada, reanuda. Si no, ya la pedirá la pantalla en show()
-            if (musicaActual != null) musicaActual.play();
+
+            // Si ya hay música cargada, play
+            if (musicaActual != null) {
+                musicaActual.play();
+            } else {
+
+                // Si no hay música cargada, intenta reproducir la que "toca" en esta pantalla
+                if (musicaObjetivoPath != null) {
+                    reproducirMusica(musicaObjetivoPath);
+                }
+            }
         }
     }
+
 
     public void setVolumenMusica(float volumen) {
         prefs.putFloat("volumen", volumen);
@@ -98,7 +115,7 @@ public class Main extends Game {
             musicaActual.stop();
             musicaActual.dispose();
             musicaActual = null;
-            musicaActualPath = null;
+
         }
     }
 
