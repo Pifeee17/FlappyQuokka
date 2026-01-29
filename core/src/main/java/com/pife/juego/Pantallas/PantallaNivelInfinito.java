@@ -2,6 +2,7 @@ package com.pife.juego.Pantallas;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -29,6 +30,8 @@ public class PantallaNivelInfinito implements Screen {
     // Font para puntuación
     private BitmapFont font;
 
+    //Musica de fondo
+
     public PantallaNivelInfinito(Main game) {
         this.game = game;
         viewport = new FitViewport(8, 5);
@@ -39,10 +42,13 @@ public class PantallaNivelInfinito implements Screen {
         batch = new SpriteBatch();
 
         // Fondo
-        fondoTex1 = new com.badlogic.gdx.graphics.Texture("FondoNivelesQuokky.png");
-        fondoTex2 = new com.badlogic.gdx.graphics.Texture("Fondo-Reves.png");
+        fondoTex1 = new com.badlogic.gdx.graphics.Texture("Fondo-Jungla.png");
+        fondoTex2 = new com.badlogic.gdx.graphics.Texture("Fondo-Jungla.png");
         fondo1X = 0;
         fondo2X = viewport.getWorldWidth();
+
+        //Musica de Fondo
+        game.reproducirMusica("MusicaDeFondo/sonido-jungla.mp3");
 
         // Entidades
         quokky = new Quokky(viewport);
@@ -122,7 +128,9 @@ public class PantallaNivelInfinito implements Screen {
 
     @Override public void pause() {}
     @Override public void resume() {}
-    @Override public void hide() {}
+    //Al salir de la ventana paramos la musica
+    @Override public void hide() {
+    }
 
     @Override
     public void dispose() {
@@ -131,6 +139,5 @@ public class PantallaNivelInfinito implements Screen {
         fondoTex2.dispose();
         quokky.dispose();
         troncos.dispose();
-        // No se hace font.dispose() porque la fuente se comparte con Main
     }
 }

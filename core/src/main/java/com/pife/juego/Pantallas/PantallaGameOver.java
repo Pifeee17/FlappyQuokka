@@ -2,7 +2,9 @@ package com.pife.juego.Pantallas;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
@@ -19,12 +21,19 @@ public class PantallaGameOver implements Screen {
     private Texture txtBoton;
     private FitViewport viewport;
     private Sprite btnReintentar, btnMenu;
+    private BitmapFont font;
+    private Float factorEscaladoFuente;
     public PantallaGameOver(Main game) {
         this.game = game;
+        font = game.fuente;
     }
 
     @Override
     public void show() {
+
+        //Musica de Fondo
+        game.reproducirMusica("MusicaDeFondo/sonido-menu.mp3");
+
         batch = new SpriteBatch();
         fondoGameOver = new Texture("PantallaGameOver.png");
 
@@ -45,6 +54,11 @@ public class PantallaGameOver implements Screen {
 
         btnReintentar.setBounds(x, yBase, w, h);
         btnMenu.setBounds(x, yBase - 0.85f, w, h);
+
+        float dpiScale = Gdx.graphics.getDensity();
+        factorEscaladoFuente = (viewport.getWorldHeight() / Gdx.graphics.getHeight()) * dpiScale;
+        font.getData().setScale(factorEscaladoFuente * 0.58f);
+        font.setColor(Color.WHITE);
     }
 
     @Override
@@ -60,6 +74,8 @@ public class PantallaGameOver implements Screen {
         btnReintentar.draw(batch);
         btnMenu.draw(batch);
 
+        font.draw(batch, "REINTENTAR", btnReintentar.getX() + 0.65f, btnReintentar.getY() + 0.6f );
+        font.draw(batch, "MENU", btnMenu.getX() + 1.2f, btnMenu.getY() + 0.6f);
 
         batch.end();
 
@@ -77,6 +93,8 @@ public class PantallaGameOver implements Screen {
                 game.setScreen(new MenuPrincipal(game));
             }
         }
+
+
     }
 
     @Override public void resize(int width, int height) {
@@ -91,5 +109,6 @@ public class PantallaGameOver implements Screen {
         fondoGameOver.dispose();
         btnMenu.getTexture().dispose();
         btnReintentar.getTexture().dispose();
+        font.dispose();
     }
 }

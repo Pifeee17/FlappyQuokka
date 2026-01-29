@@ -74,6 +74,7 @@ public class PantallaSeleccionModos implements Screen {
         font.draw(batch, "SELECCIONA UN MODO", 1.15f, 8f - 1f);
         font.draw(batch, "ARCADE", btnArcade.getX() + 1f, btnArcade.getY() + 1.1f);
         font.draw(batch, "POR NIVELES", btnNiveles.getX() + 0.6f, btnNiveles.getY() + 1.1f);
+        font.draw(batch, "VOLVER", btnVolver.getX() + 1.28f, btnVolver.getY() + 1.1f);
         batch.end();
 
         if (Gdx.input.justTouched()) {
@@ -87,6 +88,10 @@ public class PantallaSeleccionModos implements Screen {
             if (btnNiveles.getBoundingRectangle().contains(touch.x, touch.y)) {
                 Gdx.app.log("MODO", "POR NIVELES");
                 // game.setScreen(new PantallaNiveles(game));
+            }
+            if (btnVolver.getBoundingRectangle().contains(touch.x, touch.y)){
+                Gdx.app.log("VOLVER", "VOLVER AL MENU PRINCIPAL");
+                game.setScreen(new MenuPrincipal(game));
             }
         }
 

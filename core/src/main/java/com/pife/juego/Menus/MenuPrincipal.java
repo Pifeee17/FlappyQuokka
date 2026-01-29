@@ -2,6 +2,7 @@ package com.pife.juego.Menus;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -28,6 +29,8 @@ public class MenuPrincipal implements Screen {
 
     private Sprite btnJugar, btnModos, btnOpciones, btnCreditos;
 
+    //Musica de Fondo
+
     public MenuPrincipal(Main game) {
         this.game = game;
         font = game.fuente;
@@ -37,6 +40,10 @@ public class MenuPrincipal implements Screen {
     public void show() {
 
         Gdx.app.log("MENU", "MenuPrincipal cargado");
+
+        game.reproducirMusica("MusicaDeFondo/sonido-menu.mp3");
+
+
 
         batch = new SpriteBatch();
 
@@ -78,7 +85,7 @@ public class MenuPrincipal implements Screen {
 
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(Color.GRAY);
+        ScreenUtils.clear(Color.BLACK);
         viewport.apply();
         batch.setProjectionMatrix(viewport.getCamera().combined);
 
@@ -124,7 +131,8 @@ public class MenuPrincipal implements Screen {
 
     @Override public void pause() {}
     @Override public void resume() {}
-    @Override public void hide() {}
+    @Override public void hide() {
+    }
 
     @Override
     public void dispose() {

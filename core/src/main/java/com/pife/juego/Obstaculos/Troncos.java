@@ -28,6 +28,10 @@ public class Troncos {
     private float anchoTronco = 1f;
     private float anchoEnredadera = 2f;
 
+    private float huecoMin = 0.65f;
+    private float huecoMax = 0.75f;
+
+
     private int puntos = 0; // puntuación
 
     public Troncos(FitViewport viewport) {
@@ -69,24 +73,48 @@ public class Troncos {
     }
 
     private void generarPar() {
-        float alturaAbajo = 1f + random.nextFloat() * (viewport.getWorldHeight() - hueco - 2f);
-        float alturaArriba = viewport.getWorldHeight() - alturaAbajo - hueco;
+        float worldH = viewport.getWorldHeight();
 
-        // Tronco de abajo
+        // Hueco variable (más pequeño)
+        float huecoActual = huecoMin + random.nextFloat() * (huecoMax - huecoMin);
+
+        // Alturas independientes
+        float minAbajo = 0.15f * worldH;
+        float maxAbajo = 0.65f * worldH;
+
+        float minArriba = 0.15f * worldH;
+        float maxArriba = 0.65f * worldH;
+
+        float alturaAbajo = minAbajo + random.nextFloat() * (maxAbajo - minAbajo);
+        float alturaArriba = minArriba + random.nextFloat() * (maxArriba - minArriba);
+
+        // Ajuste de seguridad para que quepan
+        float espacioTotal = alturaAbajo + alturaArriba + huecoActual;
+        if (espacioTotal > worldH) {
+            float exceso = espacioTotal - worldH;
+            alturaArriba = alturaArriba - exceso;
+        }
+
+        // Tronco abajo
         Sprite sAbajo = new Sprite(texAbajo);
         sAbajo.setSize(anchoTronco, alturaAbajo);
         sAbajo.setPosition(viewport.getWorldWidth(), 0);
 
-        // Enredadera arriba centrada sobre el tronco
+        // Enredadera arriba (mucho más cerca)
         Sprite sArriba = new Sprite(texArriba);
         sArriba.setSize(anchoEnredadera, alturaArriba);
         float offsetX = (anchoTronco - anchoEnredadera) / 2f;
-        sArriba.setPosition(viewport.getWorldWidth() + offsetX, alturaAbajo + hueco);
+        sArriba.setPosition(
+            viewport.getWorldWidth() + offsetX,
+            worldH - alturaArriba
+        );
 
         abajo.add(sAbajo);
         arriba.add(sArriba);
-        contado.add(false); // todavía no contado
+        contado.add(false);
     }
+
+
 
     public boolean colisiona(Rectangle personaje) {
         for (int i = 0; i < abajo.size; i++) {
