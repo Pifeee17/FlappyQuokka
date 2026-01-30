@@ -9,7 +9,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import java.util.Random;
 
-public class Troncos {
+public class TroncosEnrredaderas {
 
     private Array<Sprite> abajo = new Array<>();
     private Array<Sprite> arriba = new Array<>();
@@ -26,15 +26,15 @@ public class Troncos {
 
     // Anchos personalizables
     private float anchoTronco = 1f;
-    private float anchoEnredadera = 2f;
+    private float anchoEnredadera = 1f;
 
-    private float huecoMin = 0.65f;
-    private float huecoMax = 0.75f;
+    private float huecoMin = 0.67f;
+    private float huecoMax = 0.8f;
 
 
     private int puntos = 0; // puntuación
 
-    public Troncos(FitViewport viewport) {
+    public TroncosEnrredaderas(FitViewport viewport) {
         this.viewport = viewport;
         texAbajo = new Texture("tronco vertical.png");
         texArriba = new Texture("Enrredadera_Vertical.png");
@@ -97,12 +97,13 @@ public class Troncos {
 
         // Tronco abajo
         Sprite sAbajo = new Sprite(texAbajo);
-        sAbajo.setSize(anchoTronco, alturaAbajo);
+        sAbajo.setSize(anchoTronco, alturaAbajo); // todo
         sAbajo.setPosition(viewport.getWorldWidth(), 0);
 
         // Enredadera arriba (mucho más cerca)
         Sprite sArriba = new Sprite(texArriba);
         sArriba.setSize(anchoEnredadera, alturaArriba);
+//        sArriba.setSize(anchoEnredadera, 2);
         float offsetX = (anchoTronco - anchoEnredadera) / 2f;
         sArriba.setPosition(
             viewport.getWorldWidth() + offsetX,

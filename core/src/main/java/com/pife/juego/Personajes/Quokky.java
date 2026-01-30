@@ -34,7 +34,7 @@ public class Quokky {
 
         texture_abajo = new Texture("quokka_alas_abajo.png");
         texture_medio = new Texture("quokka-medio.png");
-        texture_arriba = new Texture("Quokka_alas_arriba.png");
+        texture_arriba = new Texture("Quokka_alas_Arriba.png");
 
         texturaActual = texture_medio;
 

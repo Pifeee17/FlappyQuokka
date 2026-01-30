@@ -2,7 +2,6 @@ package com.pife.juego.Pantallas;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -10,7 +9,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.pife.juego.Main;
 import com.pife.juego.Personajes.Quokky;
-import com.pife.juego.Obstaculos.Troncos;
+import com.pife.juego.Obstaculos.TroncosEnrredaderas;
 
 public class PantallaNivelInfinito implements Screen {
 
@@ -25,7 +24,7 @@ public class PantallaNivelInfinito implements Screen {
 
     // Entidades
     private Quokky quokky;
-    private Troncos troncos;
+    private TroncosEnrredaderas troncos;
 
     // Font para puntuación
     private BitmapFont font;
@@ -52,7 +51,7 @@ public class PantallaNivelInfinito implements Screen {
 
         // Entidades
         quokky = new Quokky(viewport);
-        troncos = new Troncos(viewport);
+        troncos = new TroncosEnrredaderas(viewport);
 
         // Font para puntos usando la fuente de Main
         font = game.fuente;
