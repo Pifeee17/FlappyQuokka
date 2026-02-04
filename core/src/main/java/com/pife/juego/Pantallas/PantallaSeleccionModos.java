@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.pife.juego.Main;
 import com.badlogic.gdx.Input;
 import com.pife.juego.Menus.MenuPrincipal;
+import com.pife.juego.Idiomas.Idiomas;
 
 
 public class PantallaSeleccionModos implements Screen {
@@ -38,9 +39,14 @@ public class PantallaSeleccionModos implements Screen {
         batch = new SpriteBatch();
         viewport = new FitViewport(5, 8);
 
-        fondo = new Texture("Fondo-Select-Modos.png");
-        txtBoton = new Texture("Boton.png");
-        txtBotonVolver = new Texture("Boton_Volver.png");
+        //Idiomas
+        String idioma = game.getPrefs().getString("idioma", "ES");
+        Idiomas.cargar(idioma);
+
+
+        fondo = new Texture("Pantallas/Fondo-Select-Modos.png");
+        txtBoton = new Texture("Botones/Boton.png");
+        txtBotonVolver = new Texture("Botones/Boton_Volver.png");
 
 
         btnArcade = new Sprite(txtBoton);
@@ -71,10 +77,10 @@ public class PantallaSeleccionModos implements Screen {
         btnNiveles.draw(batch);
         btnVolver.draw(batch);
 
-        font.draw(batch, "SELECCIONA UN MODO", 1.15f, 8f - 1f);
-        font.draw(batch, "ARCADE", btnArcade.getX() + 1f, btnArcade.getY() + 1.1f);
-        font.draw(batch, "POR NIVELES", btnNiveles.getX() + 0.6f, btnNiveles.getY() + 1.1f);
-        font.draw(batch, "VOLVER", btnVolver.getX() + 1.28f, btnVolver.getY() + 1.1f);
+        font.draw(batch, Idiomas.t("select"), 1.15f, 8f - 1f);
+        font.draw(batch, Idiomas.t("arcade"), btnArcade.getX() + 1f, btnArcade.getY() + 1.1f);
+        font.draw(batch, Idiomas.t("level"), btnNiveles.getX() + 0.6f, btnNiveles.getY() + 1.1f);
+        font.draw(batch, Idiomas.t("back"), btnVolver.getX() + 1.28f, btnVolver.getY() + 1.1f);
         batch.end();
 
         if (Gdx.input.justTouched()) {

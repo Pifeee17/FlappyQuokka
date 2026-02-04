@@ -36,8 +36,8 @@ public class TroncosEnrredaderas {
 
     public TroncosEnrredaderas(FitViewport viewport) {
         this.viewport = viewport;
-        texAbajo = new Texture("tronco vertical.png");
-        texArriba = new Texture("Enrredadera_Vertical.png");
+        texAbajo = new Texture("Obstaculos/tronco vertical.png");
+        texArriba = new Texture("Obstaculos/Enrredadera_Vertical.png");
     }
 
     public void update(float delta, float velocidad, float personajeX) {

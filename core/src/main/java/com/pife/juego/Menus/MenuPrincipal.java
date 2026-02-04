@@ -1,8 +1,8 @@
 package com.pife.juego.Menus;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -11,10 +11,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.pife.juego.Constantes;
 import com.pife.juego.Main;
 import com.pife.juego.Pantallas.PantallaNivelInfinito;
 import com.pife.juego.Pantallas.PantallaOpciones;
 import com.pife.juego.Pantallas.PantallaSeleccionModos;
+import com.pife.juego.Idiomas.Idiomas;
+
 
 public class MenuPrincipal implements Screen {
 
@@ -30,8 +33,6 @@ public class MenuPrincipal implements Screen {
 
     private Sprite btnJugar, btnModos, btnOpciones, btnCreditos;
 
-    //Musica de Fondo
-
     public MenuPrincipal(Main game) {
         this.game = game;
         font = game.fuente;
@@ -42,13 +43,17 @@ public class MenuPrincipal implements Screen {
 
         Gdx.app.log("MENU", "MenuPrincipal cargado");
 
+        //Musica de Fondo
         game.reproducirMusica("MusicaDeFondo/sonido-menu.mp3");
 
+        //Idiomas
+        String idioma = game.getPrefs().getString("idioma", "ES");
+        Idiomas.cargar(idioma);
 
 
         batch = new SpriteBatch();
 
-        image = new Texture("Portada-Quokky.png");
+        image = new Texture("Pantallas/Portada-Quokky.png");
         im = new Sprite(image);
 
         viewport = new FitViewport(5, 8);
@@ -56,16 +61,13 @@ public class MenuPrincipal implements Screen {
         im.setSize(5f, 8f);
         im.setPosition(0, 0f);
 
-        // Texturas de botones
-        txtBotones = new Texture("Boton.png");
+        txtBotones = new Texture("Botones/Boton.png");
 
-        // Sprites de botones
         btnJugar = new Sprite(txtBotones);
         btnModos = new Sprite(txtBotones);
         btnOpciones = new Sprite(txtBotones);
         btnCreditos = new Sprite(txtBotones);
 
-        // Tamaño de botones
         float w = 3f;
         float h = 1f;
 
@@ -77,11 +79,21 @@ public class MenuPrincipal implements Screen {
         btnOpciones.setBounds(x, yBase - 1.7f, w, h);
         btnCreditos.setBounds(x, yBase - 2.55f, w, h);
 
+        if (Gdx.app.getType() == Application.ApplicationType.Android) {
 
-        float dpiScale = Gdx.graphics.getDensity();
-        factorEscaladoFuente = (viewport.getWorldHeight() / Gdx.graphics.getHeight()) * dpiScale;
-        font.getData().setScale(factorEscaladoFuente * 0.75f);
-        font.setColor(Color.WHITE);
+            float dpiScale = Gdx.graphics.getDensity();
+            factorEscaladoFuente = (viewport.getWorldHeight() / Gdx.graphics.getHeight()) * dpiScale;
+            font.getData().setScale(factorEscaladoFuente * Constantes.ESCALADO_ANDROID);
+            font.setColor(Color.WHITE);
+
+        } else {
+
+            float dpiScale = Gdx.graphics.getDensity();
+            factorEscaladoFuente = (viewport.getWorldHeight() / Gdx.graphics.getHeight()) * dpiScale;
+            font.getData().setScale(factorEscaladoFuente * Constantes.ESCALADO_DESKTOP);
+            font.setColor(Color.WHITE);
+        }
+
     }
 
     @Override
@@ -98,30 +110,24 @@ public class MenuPrincipal implements Screen {
         btnOpciones.draw(batch);
         btnCreditos.draw(batch);
 
-        // Texto de botones
-        font.draw(batch, "JUGAR", btnJugar.getX() + 1f, btnJugar.getY() + 0.65f);
-        font.draw(batch, "MODOS", btnModos.getX() + 1f, btnModos.getY() + 0.65f);
-        font.draw(batch, "OPCIONES", btnOpciones.getX() + 0.65f, btnOpciones.getY() + 0.65f);
-        font.draw(batch, "CREDITOS", btnCreditos.getX() + 0.65f, btnCreditos.getY() + 0.65f);
+        font.draw(batch, Idiomas.t("play"), btnJugar.getX() + 1f, btnJugar.getY() + 0.65f);
+        font.draw(batch, Idiomas.t("modes"), btnModos.getX() + 1f, btnModos.getY() + 0.65f);
+        font.draw(batch, Idiomas.t("options"), btnOpciones.getX() + 0.65f, btnOpciones.getY() + 0.65f);
+        font.draw(batch, Idiomas.t("credits"), btnCreditos.getX() + 0.65f, btnCreditos.getY() + 0.65f);
+
 
         batch.end();
 
-        // Detectar clicks
         if (Gdx.input.justTouched()) {
             Vector3 touch = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
             viewport.unproject(touch);
 
             if (btnJugar.getBoundingRectangle().contains(touch.x, touch.y)) {
                 game.setScreen(new PantallaNivelInfinito(game));
-                Gdx.app.log("BOTON", "JUGAR");
             } else if (btnModos.getBoundingRectangle().contains(touch.x, touch.y)) {
                 game.setScreen(new PantallaSeleccionModos(game));
-                Gdx.app.log("BOTON", "MODOS");
             } else if (btnOpciones.getBoundingRectangle().contains(touch.x, touch.y)) {
-                Gdx.app.log("BOTON", "OPCIONES");
                 game.setScreen(new PantallaOpciones(game));
-            } else if (btnCreditos.getBoundingRectangle().contains(touch.x, touch.y)) {
-                Gdx.app.log("BOTON", "CREDITOS");
             }
         }
     }
@@ -133,8 +139,7 @@ public class MenuPrincipal implements Screen {
 
     @Override public void pause() {}
     @Override public void resume() {}
-    @Override public void hide() {
-    }
+    @Override public void hide() {}
 
     @Override
     public void dispose() {

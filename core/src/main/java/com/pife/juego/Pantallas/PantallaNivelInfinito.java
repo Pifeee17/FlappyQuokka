@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.pife.juego.Main;
 import com.pife.juego.Personajes.Quokky;
 import com.pife.juego.Obstaculos.TroncosEnrredaderas;
+import com.pife.juego.Idiomas.Idiomas;
 
 public class PantallaNivelInfinito implements Screen {
 
@@ -40,9 +41,14 @@ public class PantallaNivelInfinito implements Screen {
     public void show() {
         batch = new SpriteBatch();
 
+        //Idiomas
+        String idioma = game.getPrefs().getString("idioma", "ES");
+        Idiomas.cargar(idioma);
+
+
         // Fondo
-        fondoTex1 = new com.badlogic.gdx.graphics.Texture("Fondo-Jungla.png");
-        fondoTex2 = new com.badlogic.gdx.graphics.Texture("Fondo-Jungla.png");
+        fondoTex1 = new com.badlogic.gdx.graphics.Texture("Pantallas/Fondo-Jungla.png");
+        fondoTex2 = new com.badlogic.gdx.graphics.Texture("Pantallas/Fondo-Jungla.png");
         fondo1X = 0;
         fondo2X = viewport.getWorldWidth();
 
@@ -99,7 +105,7 @@ public class PantallaNivelInfinito implements Screen {
         quokky.draw(batch);
 
         // Dibujar puntuación arriba a la izquierda
-        font.draw(batch, "PUNTOS: " + troncos.getPuntos(), 0.1f, viewport.getWorldHeight() - 0.1f);
+        font.draw(batch, Idiomas.t("points: ") + troncos.getPuntos(), 0.1f, viewport.getWorldHeight() - 0.1f);
 
         batch.end();
     }

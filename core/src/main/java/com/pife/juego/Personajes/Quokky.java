@@ -32,9 +32,9 @@ public class Quokky {
     public Quokky(FitViewport viewport) {
         this.viewport = viewport;
 
-        texture_abajo = new Texture("quokka_alas_abajo.png");
-        texture_medio = new Texture("quokka-medio.png");
-        texture_arriba = new Texture("Quokka_alas_Arriba.png");
+        texture_abajo = new Texture("Personajes/quokka_alas_abajo.png");
+        texture_medio = new Texture("Personajes/quokka-medio.png");
+        texture_arriba = new Texture("Personajes/Quokka_alas_Arriba.png");
 
         texturaActual = texture_medio;
 

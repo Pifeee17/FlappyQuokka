@@ -1,5 +1,6 @@
 package com.pife.juego.Pantallas;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -10,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.pife.juego.Constantes;
 import com.pife.juego.Main;
 import com.pife.juego.Menus.MenuPrincipal;
 
@@ -35,9 +37,9 @@ public class PantallaGameOver implements Screen {
         game.reproducirMusica("MusicaDeFondo/sonido-menu.mp3");
 
         batch = new SpriteBatch();
-        fondoGameOver = new Texture("PantallaGameOver.png");
+        fondoGameOver = new Texture("Pantallas/PantallaGameOver.png");
 
-        txtBoton = new Texture("Boton.png");
+        txtBoton = new Texture("Botones/Boton.png");
 
         // Mismo viewport que Main (5x8 unidades)
         viewport = new FitViewport(5, 8);
@@ -57,7 +59,17 @@ public class PantallaGameOver implements Screen {
 
         float dpiScale = Gdx.graphics.getDensity();
         factorEscaladoFuente = (viewport.getWorldHeight() / Gdx.graphics.getHeight()) * dpiScale;
-        font.getData().setScale(factorEscaladoFuente * 0.58f);
+        Gdx.app.log("esca",""+factorEscaladoFuente+" "+dpiScale+" "+viewport.getWorldHeight()+" "+Gdx.graphics.getHeight());
+//        factorEscaladoFuente = (Gdx.graphics.getHeight() / viewport.getWorldHeight()) * dpiScale;
+//        Gdx.app.log("esca",""+factorEscaladoFuente+" "+dpiScale);
+        if (Gdx.app.getType()== Application.ApplicationType.Android){
+//            font.getData().setScale(factorEscaladoFuente * Constantes.ESCALADO_ANDROID);
+               font.getData().setScale(Gdx.graphics.getHeight()*0.00001f);
+        }else {
+            font.getData().setScale(factorEscaladoFuente * Constantes.ESCALADO_DESKTOP);
+            font.getData().setScale(Gdx.graphics.getHeight()*0.00001f);
+        }
+//        font.getData().setScale(factorEscaladoFuente * 0.58f);
         font.setColor(Color.WHITE);
     }
 

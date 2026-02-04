@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.pife.juego.Idiomas.Idiomas;
 import com.pife.juego.Main;
 import com.pife.juego.Menus.MenuPrincipal;
 
@@ -49,18 +50,21 @@ public class PantallaOpciones implements Screen {
         batch = new SpriteBatch();
         viewport = new FitViewport(5, 8);
 
-        fondoTex = new Texture("FondoNivelesQuokky.png");
+        fondoTex = new Texture("Pantallas/FondoNivelesQuokky.png");
         fondo = new Sprite(fondoTex);
         fondo.setSize(5f, 8f);
         fondo.setPosition(0, 0);
 
-        txtBoton = new Texture("Boton.png");
-        txtBotonVolver = new Texture("Boton_Volver.png");
+        txtBoton = new Texture("Botones/Boton.png");
+        txtBotonVolver = new Texture("Botones/Boton_Volver.png");
 
         prefs = game.getPrefs();
         musicaOn = prefs.getBoolean("musicaOn", true);
         vibracionOn = prefs.getBoolean("vibracionOn", true);
         idioma = prefs.getString("idioma", "ES");
+
+        // Cargar idioma actual (para traducir textos)
+        Idiomas.cargar(idioma);
 
         btnMusica = new Sprite(txtBoton);
         btnVibracion = new Sprite(txtBoton);
@@ -100,22 +104,28 @@ public class PantallaOpciones implements Screen {
         btnIdioma.draw(batch);
         btnVolver.draw(batch);
 
-        //Texto Botones
+        // ===== Texto Botones (TRADUCIDO) =====
+
+        // MUSICA
         if (musicaOn) {
-            font.draw(batch, "MUSICA: ON", btnMusica.getX() + 0.8f, btnMusica.getY() + 0.85f);
+            drawText(Idiomas.t("music") + ": " + Idiomas.t("on"), btnMusica);
         } else {
-            font.draw(batch, "MUSICA: OFF", btnMusica.getX() + 0.8f, btnMusica.getY() + 0.85f);
+            drawText(Idiomas.t("music") + ": " + Idiomas.t("off"), btnMusica);
         }
 
+        // VIBRACION
         if (vibracionOn) {
-            font.draw(batch, "VIBRA: ON", btnVibracion.getX() + 0.8f, btnVibracion.getY() + 0.85f);
+            drawText(Idiomas.t("vibration") + ": " + Idiomas.t("on"), btnVibracion);
         } else {
-            font.draw(batch, "VIBRA: OFF", btnVibracion.getX() + 0.8f, btnVibracion.getY() + 0.85f);
+            drawText(Idiomas.t("vibration") + ": " + Idiomas.t("off"), btnVibracion);
         }
 
-        font.draw(batch, "IDIOMA: " + idioma, btnIdioma.getX() + 0.8f, btnIdioma.getY() + 0.85f);
+        // IDIOMA (muestras ES / EN porque es el valor del selector)
+        drawText(Idiomas.t("language") + ": " + idioma, btnIdioma);
 
-        font.draw(batch, "VOLVER", btnVolver.getX() + 1.6f, btnVolver.getY() + 0.85f);
+        // VOLVER
+        // (mantengo tu alineación original del botón volver)
+        font.draw(batch, Idiomas.t("back"), btnVolver.getX() + 1.6f, btnVolver.getY() + 0.85f);
 
         batch.end();
 
@@ -164,6 +174,9 @@ public class PantallaOpciones implements Screen {
 
                 prefs.putString("idioma", idioma);
                 prefs.flush();
+
+                // RECARGAR TEXTOS al cambiar idioma (clave para que se vea al instante)
+                Idiomas.cargar(idioma);
 
                 if (vibracionOn) {
                     Gdx.input.vibrate(40);
