@@ -57,19 +57,7 @@ public class PantallaGameOver implements Screen {
         btnReintentar.setBounds(x, yBase, w, h);
         btnMenu.setBounds(x, yBase - 0.85f, w, h);
 
-        float dpiScale = Gdx.graphics.getDensity();
-        factorEscaladoFuente = (viewport.getWorldHeight() / Gdx.graphics.getHeight()) * dpiScale;
-        Gdx.app.log("esca",""+factorEscaladoFuente+" "+dpiScale+" "+viewport.getWorldHeight()+" "+Gdx.graphics.getHeight());
-//        factorEscaladoFuente = (Gdx.graphics.getHeight() / viewport.getWorldHeight()) * dpiScale;
-//        Gdx.app.log("esca",""+factorEscaladoFuente+" "+dpiScale);
-        if (Gdx.app.getType()== Application.ApplicationType.Android){
-//            font.getData().setScale(factorEscaladoFuente * Constantes.ESCALADO_ANDROID);
-               font.getData().setScale(Gdx.graphics.getHeight()*0.00001f);
-        }else {
-            font.getData().setScale(factorEscaladoFuente * Constantes.ESCALADO_DESKTOP);
-            font.getData().setScale(Gdx.graphics.getHeight()*0.00001f);
-        }
-//        font.getData().setScale(factorEscaladoFuente * 0.58f);
+
         font.setColor(Color.WHITE);
     }
 

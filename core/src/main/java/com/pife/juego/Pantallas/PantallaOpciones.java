@@ -82,11 +82,11 @@ public class PantallaOpciones implements Screen {
         btnIdioma.setBounds(x, yBase - 2.4f, w, h);
         btnVolver.setBounds(x, yBase - 3.6f, w, h);
 
-        float dpiScale = Gdx.graphics.getDensity();
-        factorEscaladoFuente =
-            (viewport.getWorldHeight() / Gdx.graphics.getHeight()) * dpiScale;
-
-        font.getData().setScale(factorEscaladoFuente * 0.75f);
+//        float dpiScale = Gdx.graphics.getDensity();
+//        factorEscaladoFuente =
+//            (viewport.getWorldHeight() / Gdx.graphics.getHeight()) * dpiScale;
+//
+//        font.getData().setScale(factorEscaladoFuente * 0.75f);
         font.setColor(Color.WHITE);
     }
 

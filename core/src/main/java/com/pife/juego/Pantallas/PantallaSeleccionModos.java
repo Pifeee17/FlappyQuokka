@@ -26,7 +26,6 @@ public class PantallaSeleccionModos implements Screen {
     private Texture txtBoton;
     private Texture txtBotonVolver;
     private Sprite btnArcade, btnNiveles, btnVolver;
-    private Float factorEscaladoFuente;
     private BitmapFont font;
 
     public PantallaSeleccionModos(Main game) {
@@ -43,11 +42,9 @@ public class PantallaSeleccionModos implements Screen {
         String idioma = game.getPrefs().getString("idioma", "ES");
         Idiomas.cargar(idioma);
 
-
         fondo = new Texture("Pantallas/Fondo-Select-Modos.png");
         txtBoton = new Texture("Botones/Boton.png");
         txtBotonVolver = new Texture("Botones/Boton_Volver.png");
-
 
         btnArcade = new Sprite(txtBoton);
         btnNiveles = new Sprite(txtBoton);
@@ -57,9 +54,6 @@ public class PantallaSeleccionModos implements Screen {
         btnNiveles.setBounds(1.15f, 4f, 3f, 2f);
         btnVolver.setBounds(1.15f, 1f, 3f, 2f);
 
-        float dpiScale = Gdx.graphics.getDensity();
-        factorEscaladoFuente = (viewport.getWorldHeight() / Gdx.graphics.getHeight()) * dpiScale;
-        font.getData().setScale(factorEscaladoFuente * 0.58f);
         font.setColor(Color.WHITE);
 
         Gdx.input.setCatchKey(Input.Keys.BACK, true);

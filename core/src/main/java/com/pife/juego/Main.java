@@ -1,9 +1,11 @@
 package com.pife.juego;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -40,6 +42,23 @@ public class Main extends Game {
         fuente.getData().setScale(escalado * 0.6f);
         fuente.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         fuente.setUseIntegerPositions(false);
+
+
+        if (Gdx.app.getType() == Application.ApplicationType.Android) {
+
+            float dpiScale = Gdx.graphics.getDensity();
+           float factorEscaladoFuente = (viewport.getWorldHeight() / Gdx.graphics.getHeight()) * dpiScale;
+            fuente.getData().setScale(factorEscaladoFuente * Constantes.ESCALADO_ANDROID);
+            fuente.setColor(Color.WHITE);
+
+        } else {
+
+            float dpiScale = Gdx.graphics.getDensity();
+//           float factorEscaladoFuente = (viewport.getWorldHeight() / Gdx.graphics.getHeight()) * dpiScale;
+            float factorEscaladoFuente = (viewport.getWorldHeight() / Gdx.graphics.getHeight()) * dpiScale;
+            fuente.getData().setScale(factorEscaladoFuente * Constantes.ESCALADO_DESKTOP);
+            fuente.setColor(Color.WHITE);
+        }
 
         // Mostramos menú principal
         setScreen(new MenuPrincipal(this));

@@ -79,21 +79,6 @@ public class MenuPrincipal implements Screen {
         btnOpciones.setBounds(x, yBase - 1.7f, w, h);
         btnCreditos.setBounds(x, yBase - 2.55f, w, h);
 
-        if (Gdx.app.getType() == Application.ApplicationType.Android) {
-
-            float dpiScale = Gdx.graphics.getDensity();
-            factorEscaladoFuente = (viewport.getWorldHeight() / Gdx.graphics.getHeight()) * dpiScale;
-            font.getData().setScale(factorEscaladoFuente * Constantes.ESCALADO_ANDROID);
-            font.setColor(Color.WHITE);
-
-        } else {
-
-            float dpiScale = Gdx.graphics.getDensity();
-            factorEscaladoFuente = (viewport.getWorldHeight() / Gdx.graphics.getHeight()) * dpiScale;
-            font.getData().setScale(factorEscaladoFuente * Constantes.ESCALADO_DESKTOP);
-            font.setColor(Color.WHITE);
-        }
-
     }
 
     @Override

@@ -63,8 +63,6 @@ public class PantallaNivelInfinito implements Screen {
         font = game.fuente;
 
         // Escalado de fuente según viewport y densidad
-        float dpiScale = (viewport.getWorldHeight() / Gdx.graphics.getHeight()) * Gdx.graphics.getDensity();
-        font.getData().setScale(dpiScale * 0.5f); // Ajusta 0.5f según lo grande que quieras el texto
         font.setColor(Color.BLACK);
     }
 
@@ -126,9 +124,6 @@ public class PantallaNivelInfinito implements Screen {
     public void resize(int width, int height) {
         viewport.update(width, height, true);
 
-        // Reescalar fuente para que se vea consistente
-        float dpiScale = (viewport.getWorldHeight() / Gdx.graphics.getHeight()) * Gdx.graphics.getDensity();
-        font.getData().setScale(dpiScale * 0.5f);
     }
 
     @Override public void pause() {}
