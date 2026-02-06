@@ -57,7 +57,7 @@ public class Main extends Game {
 //           float factorEscaladoFuente = (viewport.getWorldHeight() / Gdx.graphics.getHeight()) * dpiScale;
             float factorEscaladoFuente = (viewport.getWorldHeight() / Gdx.graphics.getHeight()) * dpiScale;
             fuente.getData().setScale(factorEscaladoFuente * Constantes.ESCALADO_DESKTOP);
-            fuente.setColor(Color.WHITE);
+            fuente.setColor(new Color(0.1f,0.4f,0.1f,1));
         }
 
         // Mostramos menú principal

@@ -28,7 +28,6 @@ public class MenuPrincipal implements Screen {
     private Sprite im;
     private FitViewport viewport;
     private BitmapFont font;
-    private Float factorEscaladoFuente;
     private Texture txtBotones;
 
     private Sprite btnJugar, btnModos, btnOpciones, btnCreditos;

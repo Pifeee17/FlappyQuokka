@@ -58,7 +58,7 @@ public class PantallaGameOver implements Screen {
         btnMenu.setBounds(x, yBase - 0.85f, w, h);
 
 
-        font.setColor(Color.WHITE);
+        font.setColor(new Color(0.1f,0.4f,0.1f,1));
     }
 
     @Override

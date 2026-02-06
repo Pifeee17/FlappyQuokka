@@ -14,6 +14,7 @@ import com.pife.juego.Main;
 import com.badlogic.gdx.Input;
 import com.pife.juego.Menus.MenuPrincipal;
 import com.pife.juego.Idiomas.Idiomas;
+import com.pife.juego.Menus.MenuSeleccionarNivel;
 
 
 public class PantallaSeleccionModos implements Screen {
@@ -52,9 +53,7 @@ public class PantallaSeleccionModos implements Screen {
 
         btnArcade.setBounds(1.15f, 5f, 3f, 2f);
         btnNiveles.setBounds(1.15f, 4f, 3f, 2f);
-        btnVolver.setBounds(1.15f, 1f, 3f, 2f);
-
-        font.setColor(Color.WHITE);
+        btnVolver.setBounds(1.5f, 1f, 2.5f, 1f);
 
         Gdx.input.setCatchKey(Input.Keys.BACK, true);
     }
@@ -73,8 +72,8 @@ public class PantallaSeleccionModos implements Screen {
 
         font.draw(batch, Idiomas.t("select"), 1.15f, 8f - 1f);
         font.draw(batch, Idiomas.t("arcade"), btnArcade.getX() + 1f, btnArcade.getY() + 1.1f);
-        font.draw(batch, Idiomas.t("level"), btnNiveles.getX() + 0.6f, btnNiveles.getY() + 1.1f);
-        font.draw(batch, Idiomas.t("back"), btnVolver.getX() + 1.28f, btnVolver.getY() + 1.1f);
+        font.draw(batch, Idiomas.t("tipes"), btnNiveles.getX() + 0.6f, btnNiveles.getY() + 1.1f);
+        font.draw(batch, Idiomas.t("back"), btnVolver.getX() + 1f, btnVolver.getY() + 0.6f);
         batch.end();
 
         if (Gdx.input.justTouched()) {
@@ -87,7 +86,7 @@ public class PantallaSeleccionModos implements Screen {
             }
             if (btnNiveles.getBoundingRectangle().contains(touch.x, touch.y)) {
                 Gdx.app.log("MODO", "POR NIVELES");
-                // game.setScreen(new PantallaNiveles(game));
+                game.setScreen(new MenuSeleccionarNivel(game));
             }
             if (btnVolver.getBoundingRectangle().contains(touch.x, touch.y)){
                 Gdx.app.log("VOLVER", "VOLVER AL MENU PRINCIPAL");
