@@ -11,74 +11,100 @@ import java.util.Random;
 
 public class TroncosEnrredaderas {
 
-    private Array<Sprite> abajo = new Array<>();
-    private Array<Sprite> arriba = new Array<>();
-    private Array<Boolean> contado = new Array<>(); // marca si el par ya sumó punto
+    public enum Skin {
+        NORMAL,
+        NIEVE
+    }
 
-    private Texture texAbajo, texArriba;
+    private Array<Sprite> abajo = new Array<Sprite>();
+    private Array<Sprite> arriba = new Array<Sprite>();
+    private Array<Boolean> contado = new Array<Boolean>();
+
+    private Texture texAbajo;
+    private Texture texArriba;
+
     private Random random = new Random();
 
     private float tiempo = 0f;
     private float intervalo = 2.5f;
-    private float hueco = 1.5f;
 
     private FitViewport viewport;
 
-    // Anchos personalizables
     private float anchoTronco = 1f;
     private float anchoEnredadera = 1f;
 
     private float huecoMin = 0.67f;
     private float huecoMax = 0.8f;
 
+    private int puntos = 0;
 
-    private int puntos = 0; // puntuación
-
-    public TroncosEnrredaderas(FitViewport viewport) {
+    public TroncosEnrredaderas(FitViewport viewport, Skin skin) {
         this.viewport = viewport;
-        texAbajo = new Texture("Obstaculos/tronco vertical.png");
-        texArriba = new Texture("Obstaculos/Enrredadera_Vertical.png");
+        cargarTexturas(skin);
+    }
+
+    private void cargarTexturas(Skin skin) {
+        if (texAbajo != null) {
+            texAbajo.dispose();
+        }
+        if (texArriba != null) {
+            texArriba.dispose();
+        }
+
+        if (skin == Skin.NIEVE) {
+            texAbajo = new Texture("Obstaculos/tronco vertical_Nieve.png");
+            texArriba = new Texture("Obstaculos/Enrredadera_Vertical_Nieve.png");
+        } else {
+            texAbajo = new Texture("Obstaculos/tronco vertical.png");
+            texArriba = new Texture("Obstaculos/Enrredadera_Vertical.png");
+        }
     }
 
     public void update(float delta, float velocidad, float personajeX) {
         tiempo = tiempo + delta;
 
         if (tiempo >= intervalo) {
-            tiempo = 0;
+            tiempo = 0f;
             generarPar();
         }
 
-        for (Sprite s : abajo) {
-            s.setX(s.getX() - velocidad * delta);
-        }
-        for (Sprite s : arriba) {
-            s.setX(s.getX() - velocidad * delta);
+        for (int i = 0; i < abajo.size; i++) {
+            Sprite s = abajo.get(i);
+            float nuevaX = s.getX() - velocidad * delta;
+            s.setX(nuevaX);
         }
 
-        // Contar puntos: el primer par que haya pasado al personaje
+        for (int i = 0; i < arriba.size; i++) {
+            Sprite s = arriba.get(i);
+            float nuevaX = s.getX() - velocidad * delta;
+            s.setX(nuevaX);
+        }
+
         if (abajo.size > 0) {
-            if (contado.first() == false &&
-                abajo.first().getX() + abajo.first().getWidth() < personajeX) {
-                puntos = puntos + 1; // sumar de forma explícita
-                contado.set(0, true); // marcamos como contado
+            boolean yaContado = contado.first();
+            float limiteX = abajo.first().getX() + abajo.first().getWidth();
+
+            if (yaContado == false && limiteX < personajeX) {
+                puntos = puntos + 1;
+                contado.set(0, true);
             }
         }
 
-        // Eliminar el par cuando sale de pantalla
-        if (abajo.size > 0 && abajo.first().getX() + abajo.first().getWidth() < 0) {
-            abajo.removeIndex(0);
-            arriba.removeIndex(0);
-            contado.removeIndex(0); // eliminamos la marca también
+        if (abajo.size > 0) {
+            float limiteX = abajo.first().getX() + abajo.first().getWidth();
+            if (limiteX < 0) {
+                abajo.removeIndex(0);
+                arriba.removeIndex(0);
+                contado.removeIndex(0);
+            }
         }
     }
 
     private void generarPar() {
         float worldH = viewport.getWorldHeight();
 
-        // Hueco variable (más pequeño)
         float huecoActual = huecoMin + random.nextFloat() * (huecoMax - huecoMin);
 
-        // Alturas independientes
         float minAbajo = 0.15f * worldH;
         float maxAbajo = 0.65f * worldH;
 
@@ -88,22 +114,19 @@ public class TroncosEnrredaderas {
         float alturaAbajo = minAbajo + random.nextFloat() * (maxAbajo - minAbajo);
         float alturaArriba = minArriba + random.nextFloat() * (maxArriba - minArriba);
 
-        // Ajuste de seguridad para que quepan
         float espacioTotal = alturaAbajo + alturaArriba + huecoActual;
         if (espacioTotal > worldH) {
             float exceso = espacioTotal - worldH;
             alturaArriba = alturaArriba - exceso;
         }
 
-        // Tronco abajo
         Sprite sAbajo = new Sprite(texAbajo);
-        sAbajo.setSize(anchoTronco, alturaAbajo); // todo
-        sAbajo.setPosition(viewport.getWorldWidth(), 0);
+        sAbajo.setSize(anchoTronco, alturaAbajo);
+        sAbajo.setPosition(viewport.getWorldWidth(), 0f);
 
-        // Enredadera arriba (mucho más cerca)
         Sprite sArriba = new Sprite(texArriba);
         sArriba.setSize(anchoEnredadera, alturaArriba);
-//        sArriba.setSize(anchoEnredadera, 2);
+
         float offsetX = (anchoTronco - anchoEnredadera) / 2f;
         sArriba.setPosition(
             viewport.getWorldWidth() + offsetX,
@@ -115,12 +138,12 @@ public class TroncosEnrredaderas {
         contado.add(false);
     }
 
-
-
     public boolean colisiona(Rectangle personaje) {
         for (int i = 0; i < abajo.size; i++) {
-            if (personaje.overlaps(getHitbox(abajo.get(i))) ||
-                personaje.overlaps(getHitbox(arriba.get(i)))) {
+            Rectangle hitAbajo = getHitbox(abajo.get(i));
+            Rectangle hitArriba = getHitbox(arriba.get(i));
+
+            if (personaje.overlaps(hitAbajo) || personaje.overlaps(hitArriba)) {
                 return true;
             }
         }
@@ -148,7 +171,11 @@ public class TroncosEnrredaderas {
     }
 
     public void dispose() {
-        texAbajo.dispose();
-        texArriba.dispose();
+        if (texAbajo != null) {
+            texAbajo.dispose();
+        }
+        if (texArriba != null) {
+            texArriba.dispose();
+        }
     }
 }

@@ -12,7 +12,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.pife.juego.Idiomas.Idiomas;
 import com.pife.juego.Main;
-import com.pife.juego.Pantallas.PantallaNivelInfinito;
+import com.pife.juego.Pantallas.PantallaNivel1;
 import com.pife.juego.Pantallas.PantallaSeleccionModos;
 
 public class MenuSeleccionarNivel implements Screen {
@@ -95,7 +95,7 @@ public class MenuSeleccionarNivel implements Screen {
             viewport.unproject(touch);
 
             if (btnNivel1.getBoundingRectangle().contains(touch.x, touch.y)) {
-                //game.setScreen(new PantallaNivelInfinito(game));
+                game.setScreen(new PantallaNivel1(game));
                 Gdx.app.log("NIVEL", "NIVEL 1");
             } else if (btnVolver.getBoundingRectangle().contains(touch.x, touch.y)) {
                 game.setScreen(new PantallaSeleccionModos(game));

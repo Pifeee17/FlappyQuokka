@@ -1,18 +1,17 @@
 package com.pife.juego.Pantallas;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.pife.juego.Main;
-import com.pife.juego.Personajes.Quokky;
-import com.pife.juego.Obstaculos.TroncosEnrredaderas;
 import com.pife.juego.Idiomas.Idiomas;
+import com.pife.juego.Main;
+import com.pife.juego.Obstaculos.TroncosEnrredaderas;
+import com.pife.juego.Personajes.Quokky;
 
-public class PantallaNivelInfinito implements Screen {
+public class PantallaNivel1 implements Screen {
 
     private Main game;
     private SpriteBatch batch;
@@ -32,7 +31,7 @@ public class PantallaNivelInfinito implements Screen {
 
     //Musica de fondo
 
-    public PantallaNivelInfinito(Main game) {
+    public PantallaNivel1(Main game) {
         this.game = game;
         viewport = new FitViewport(8, 5);
     }
@@ -47,17 +46,18 @@ public class PantallaNivelInfinito implements Screen {
 
 
         // Fondo
-        fondoTex1 = new com.badlogic.gdx.graphics.Texture("Pantallas/Fondo-Jungla.png");
-        fondoTex2 = new com.badlogic.gdx.graphics.Texture("Pantallas/Fondo-Jungla.png");
+        fondoTex1 = new com.badlogic.gdx.graphics.Texture("Pantallas/Fondo_Nieve.png");
+        fondoTex2 = new com.badlogic.gdx.graphics.Texture("Pantallas/Fondo_Nieve.png");
         fondo1X = 0;
         fondo2X = viewport.getWorldWidth();
 
         //Musica de Fondo
-        game.reproducirMusica("MusicaDeFondo/sonido-jungla.mp3");
+        game.reproducirMusica("MusicaDeFondo/sonido-nieve.mp3");
 
         // Entidades
-        quokky = new Quokky(viewport, Quokky.Skin.NORMAL);
-        troncos = new TroncosEnrredaderas(viewport, TroncosEnrredaderas.Skin.NORMAL);
+        quokky = new Quokky(viewport, Quokky.Skin.NIEVE);
+
+        troncos = new TroncosEnrredaderas(viewport, TroncosEnrredaderas.Skin.NIEVE);
 
         // Font para puntos usando la fuente de Main
         font = game.fuente;
@@ -141,3 +141,5 @@ public class PantallaNivelInfinito implements Screen {
         troncos.dispose();
     }
 }
+
+
