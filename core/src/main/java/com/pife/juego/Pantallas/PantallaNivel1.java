@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.pife.juego.Idiomas.Idiomas;
 import com.pife.juego.Main;
+import com.pife.juego.Menus.MenuSeleccionarNivel;
 import com.pife.juego.Obstaculos.TroncosEnrredaderas;
 import com.pife.juego.Personajes.Quokky;
 
@@ -17,19 +18,19 @@ public class PantallaNivel1 implements Screen {
     private SpriteBatch batch;
     private FitViewport viewport;
 
-    // Fondo
-    private com.badlogic.gdx.graphics.Texture fondoTex1, fondoTex2;
-    private float fondo1X, fondo2X;
+    private com.badlogic.gdx.graphics.Texture fondoTex1;
+    private com.badlogic.gdx.graphics.Texture fondoTex2;
+    private float fondo1X;
+    private float fondo2X;
     private float velocidadFondo = 1.5f;
 
-    // Entidades
     private Quokky quokky;
     private TroncosEnrredaderas troncos;
 
-    // Font para puntuación
     private BitmapFont font;
 
-    //Musica de fondo
+    //Para evitar que se dibujen obstáculos extra al completar el nivel
+    private boolean nivelCompletado = false;
 
     public PantallaNivel1(Main game) {
         this.game = game;
@@ -40,51 +41,61 @@ public class PantallaNivel1 implements Screen {
     public void show() {
         batch = new SpriteBatch();
 
-        //Idiomas
         String idioma = game.getPrefs().getString("idioma", "ES");
         Idiomas.cargar(idioma);
 
-
-        // Fondo
         fondoTex1 = new com.badlogic.gdx.graphics.Texture("Pantallas/Fondo_Nieve.png");
         fondoTex2 = new com.badlogic.gdx.graphics.Texture("Pantallas/Fondo_Nieve.png");
-        fondo1X = 0;
+
+        fondo1X = 0f;
         fondo2X = viewport.getWorldWidth();
 
-        //Musica de Fondo
         game.reproducirMusica("MusicaDeFondo/sonido-nieve.mp3");
 
-        // Entidades
         quokky = new Quokky(viewport, Quokky.Skin.NIEVE);
-
         troncos = new TroncosEnrredaderas(viewport, TroncosEnrredaderas.Skin.NIEVE);
 
-        // Font para puntos usando la fuente de Main
         font = game.fuente;
-
-        // Escalado de fuente según viewport y densidad
         font.setColor(Color.BLACK);
+
+        nivelCompletado = false;
     }
 
     private void update(float delta) {
-        // Fondo
-        fondo1X -= velocidadFondo * delta;
-        fondo2X -= velocidadFondo * delta;
 
-        if (fondo1X + viewport.getWorldWidth() <= 0) {
-            fondo1X = fondo2X + viewport.getWorldWidth();
-        }
-        if (fondo2X + viewport.getWorldWidth() <= 0) {
-            fondo2X = fondo1X + viewport.getWorldWidth();
+        float nuevoFondo1X = fondo1X - velocidadFondo * delta;
+        float nuevoFondo2X = fondo2X - velocidadFondo * delta;
+
+        fondo1X = nuevoFondo1X;
+        fondo2X = nuevoFondo2X;
+
+        float worldWidth = viewport.getWorldWidth();
+
+        if (fondo1X + worldWidth <= 0f) {
+            fondo1X = fondo2X + worldWidth;
         }
 
-        // Entidades
+        if (fondo2X + worldWidth <= 0f) {
+            fondo2X = fondo1X + worldWidth;
+        }
+
         quokky.update(delta);
-        troncos.update(delta, velocidadFondo, quokky.getX());
 
-        // Colisión
-        if (troncos.colisiona(quokky.getHitbox())) {
-            game.setScreen(new PantallaGameOver(game));
+        //Solo actualizamos/generamos obstáculos si NO se ha completado el nivel
+        if (nivelCompletado == false) {
+            troncos.update(delta, velocidadFondo, quokky.getX());
+
+            int superados = troncos.getPuntos();
+            if (superados >= 10) {
+                nivelCompletado = true;
+                game.setScreen(new MenuSeleccionarNivel(game));
+                return;
+            }
+
+            // Colisión (solo mientras se juega)
+            if (troncos.colisiona(quokky.getHitbox())) {
+                game.setScreen(new PantallaGameOver(game, new PantallaNivel1(game)));
+            }
         }
     }
 
@@ -92,18 +103,33 @@ public class PantallaNivel1 implements Screen {
     public void render(float delta) {
         update(delta);
 
-        ScreenUtils.clear(0, 0, 0, 1);
+        ScreenUtils.clear(0f, 0f, 0f, 1f);
 
         viewport.apply();
         batch.setProjectionMatrix(viewport.getCamera().combined);
 
         batch.begin();
+
         drawFondo();
-        troncos.draw(batch);
+
+        //No dibuja obstáculos extra si ya se completó el nivel
+        if (nivelCompletado == false) {
+            troncos.draw(batch);
+        }
+
         quokky.draw(batch);
 
-        // Dibujar puntuación arriba a la izquierda
-        font.draw(batch, Idiomas.t("points: ") + troncos.getPuntos(), 0.1f, viewport.getWorldHeight() - 0.1f);
+        float textoX = 0.1f;
+        float textoY = viewport.getWorldHeight() - 0.1f;
+
+        int superados = troncos.getPuntos();
+        int cuentaAtras = 10 - superados;
+        if (cuentaAtras < 0) {
+            cuentaAtras = 0;
+        }
+
+        String texto = Idiomas.t("obstacles") + ": " + cuentaAtras;
+        font.draw(batch, texto, textoX, textoY);
 
         batch.end();
     }
@@ -123,14 +149,11 @@ public class PantallaNivel1 implements Screen {
     @Override
     public void resize(int width, int height) {
         viewport.update(width, height, true);
-
     }
 
     @Override public void pause() {}
     @Override public void resume() {}
-    //Al salir de la ventana paramos la musica
-    @Override public void hide() {
-    }
+    @Override public void hide() {}
 
     @Override
     public void dispose() {
@@ -141,5 +164,3 @@ public class PantallaNivel1 implements Screen {
         troncos.dispose();
     }
 }
-
-

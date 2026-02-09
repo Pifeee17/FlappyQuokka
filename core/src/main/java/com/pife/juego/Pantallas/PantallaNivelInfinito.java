@@ -84,7 +84,8 @@ public class PantallaNivelInfinito implements Screen {
 
         // Colisión
         if (troncos.colisiona(quokky.getHitbox())) {
-            game.setScreen(new PantallaGameOver(game));
+            game.setScreen(new PantallaGameOver(game, new PantallaNivelInfinito(game)));
+
         }
     }
 
