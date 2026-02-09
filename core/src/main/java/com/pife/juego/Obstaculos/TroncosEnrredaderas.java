@@ -38,18 +38,20 @@ public class TroncosEnrredaderas {
 
     private int puntos = 0;
 
-    public TroncosEnrredaderas(FitViewport viewport, Skin skin) {
+    // 🔥 NUEVO (mínimo necesario)
+    private int paresGenerados = 0;
+    private int maxPares;
+
+    //Constructor con límite
+    public TroncosEnrredaderas(FitViewport viewport, Skin skin, int maxPares) {
         this.viewport = viewport;
+        this.maxPares = maxPares;
         cargarTexturas(skin);
     }
 
     private void cargarTexturas(Skin skin) {
-        if (texAbajo != null) {
-            texAbajo.dispose();
-        }
-        if (texArriba != null) {
-            texArriba.dispose();
-        }
+        if (texAbajo != null) texAbajo.dispose();
+        if (texArriba != null) texArriba.dispose();
 
         if (skin == Skin.NIEVE) {
             texAbajo = new Texture("Obstaculos/tronco vertical_Nieve.png");
@@ -63,9 +65,18 @@ public class TroncosEnrredaderas {
     public void update(float delta, float velocidad, float personajeX) {
         tiempo = tiempo + delta;
 
-        if (tiempo >= intervalo) {
+        boolean puedeGenerar;
+
+        if (maxPares == -1) {
+            puedeGenerar = true;
+        } else {
+            puedeGenerar = paresGenerados < maxPares;
+        }
+
+        if (tiempo >= intervalo && puedeGenerar) {
             tiempo = 0f;
             generarPar();
+            paresGenerados = paresGenerados + 1;
         }
 
         for (int i = 0; i < abajo.size; i++) {
@@ -98,6 +109,14 @@ public class TroncosEnrredaderas {
                 contado.removeIndex(0);
             }
         }
+    }
+
+    //
+    public boolean nivelTerminado() {
+        if (maxPares == -1) {
+            return false;
+        }
+        return paresGenerados >= maxPares && abajo.size == 0;
     }
 
     private void generarPar() {
@@ -140,10 +159,8 @@ public class TroncosEnrredaderas {
 
     public boolean colisiona(Rectangle personaje) {
         for (int i = 0; i < abajo.size; i++) {
-            Rectangle hitAbajo = getHitbox(abajo.get(i));
-            Rectangle hitArriba = getHitbox(arriba.get(i));
-
-            if (personaje.overlaps(hitAbajo) || personaje.overlaps(hitArriba)) {
+            if (personaje.overlaps(getHitbox(abajo.get(i))) ||
+                personaje.overlaps(getHitbox(arriba.get(i)))) {
                 return true;
             }
         }
@@ -171,11 +188,7 @@ public class TroncosEnrredaderas {
     }
 
     public void dispose() {
-        if (texAbajo != null) {
-            texAbajo.dispose();
-        }
-        if (texArriba != null) {
-            texArriba.dispose();
-        }
+        if (texAbajo != null) texAbajo.dispose();
+        if (texArriba != null) texArriba.dispose();
     }
 }

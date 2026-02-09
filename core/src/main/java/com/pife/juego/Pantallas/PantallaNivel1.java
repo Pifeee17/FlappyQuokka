@@ -53,7 +53,7 @@ public class PantallaNivel1 implements Screen {
         game.reproducirMusica("MusicaDeFondo/sonido-nieve.mp3");
 
         quokky = new Quokky(viewport, Quokky.Skin.NIEVE);
-        troncos = new TroncosEnrredaderas(viewport, TroncosEnrredaderas.Skin.NIEVE);
+        troncos = new TroncosEnrredaderas(viewport, TroncosEnrredaderas.Skin.NIEVE, 10);
 
         font = game.fuente;
         font.setColor(Color.BLACK);

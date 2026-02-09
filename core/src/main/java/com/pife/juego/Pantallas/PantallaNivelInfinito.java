@@ -57,7 +57,7 @@ public class PantallaNivelInfinito implements Screen {
 
         // Entidades
         quokky = new Quokky(viewport, Quokky.Skin.NORMAL);
-        troncos = new TroncosEnrredaderas(viewport, TroncosEnrredaderas.Skin.NORMAL);
+        troncos = new TroncosEnrredaderas(viewport, TroncosEnrredaderas.Skin.NORMAL, -1); //El -1 es que son pares infinitos
 
         // Font para puntos usando la fuente de Main
         font = game.fuente;
