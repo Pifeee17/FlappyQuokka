@@ -14,7 +14,7 @@ import com.pife.juego.Pantallas.PantallaGameOver;
 import com.pife.juego.Pantallas.PantallaVictoria;
 import com.pife.juego.Personajes.Quokky;
 
-public class PantallaNivel1 implements Screen {
+public class PantallaNivel2 implements Screen {
 
     private Main game;
     private SpriteBatch batch;
@@ -34,7 +34,7 @@ public class PantallaNivel1 implements Screen {
     //Para evitar que se dibujen obstáculos extra al completar el nivel
     private boolean nivelCompletado = false;
 
-    public PantallaNivel1(Main game) {
+    public PantallaNivel2(Main game) {
         this.game = game;
         viewport = new FitViewport(8, 5);
     }
@@ -46,16 +46,16 @@ public class PantallaNivel1 implements Screen {
         String idioma = game.getPrefs().getString("idioma", "ES");
         Idiomas.cargar(idioma);
 
-        fondoTex1 = new com.badlogic.gdx.graphics.Texture("Pantallas/Fondo_Nieve.png");
-        fondoTex2 = new com.badlogic.gdx.graphics.Texture("Pantallas/Fondo_Nieve.png");
+        fondoTex1 = new com.badlogic.gdx.graphics.Texture("Pantallas/Fondo-Cueva.png");
+        fondoTex2 = new com.badlogic.gdx.graphics.Texture("Pantallas/Fondo-Cueva.png");
 
         fondo1X = 0f;
         fondo2X = viewport.getWorldWidth();
 
-        game.reproducirMusica("MusicaDeFondo/sonido-nieve.mp3");
+        game.reproducirMusica("MusicaDeFondo/sonido-cueva.mp3");
 
-        quokky = new Quokky(viewport, Quokky.Skin.NIEVE);
-        troncos = new TroncosEnrredaderas(viewport, TroncosEnrredaderas.Skin.NIEVE, 5);
+        quokky = new Quokky(viewport, Quokky.Skin.CUEVA);
+        troncos = new TroncosEnrredaderas(viewport, TroncosEnrredaderas.Skin.CUEVA, 10);
 
         font = game.fuente;
         font.setColor(Color.BLACK);
@@ -88,20 +88,18 @@ public class PantallaNivel1 implements Screen {
             troncos.update(delta, velocidadFondo, quokky.getX());
 
             int superados = troncos.getPuntos();
-            if (superados >= 5) {
+            if (superados >= 10) {
 
-                // Desbloquear nivel 2
-                game.getPrefs().putBoolean("nivel2_desbloqueado", true);
+                // Desbloquear nivel 3
+                game.getPrefs().putBoolean("nivel3_desbloqueado", true);
                 game.getPrefs().flush();
 
                 nivelCompletado = true;
 
                 //IR A PANTALLA VICTORIA Y DECIRLE CUÁL ES EL SIGUIENTE NIVEL
-                game.setScreen(
-                    new PantallaVictoria(game, new PantallaNivel2(game)));
-                    return;
+                game.setScreen(new PantallaVictoria(game, new PantallaNivel2(game)));
+                return;
             }
-
 
             // Colisión (solo mientras se juega)
             if (troncos.colisiona(quokky.getHitbox())) {
@@ -134,7 +132,7 @@ public class PantallaNivel1 implements Screen {
         float textoY = viewport.getWorldHeight() - 0.1f;
 
         int superados = troncos.getPuntos();
-        int cuentaAtras = 5 - superados;
+        int cuentaAtras = 10 - superados;
         if (cuentaAtras < 0) {
             cuentaAtras = 0;
         }

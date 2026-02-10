@@ -17,7 +17,6 @@ public class PantallaNivelInfinito implements Screen {
     private Main game;
     private SpriteBatch batch;
     private FitViewport viewport;
-
     // Fondo
     private com.badlogic.gdx.graphics.Texture fondoTex1, fondoTex2;
     private float fondo1X, fondo2X;
@@ -104,7 +103,7 @@ public class PantallaNivelInfinito implements Screen {
         quokky.draw(batch);
 
         // Dibujar puntuación arriba a la izquierda
-        font.draw(batch, Idiomas.t("points: ") + troncos.getPuntos(), 0.1f, viewport.getWorldHeight() - 0.1f);
+        font.draw(batch, Idiomas.t("points") +": " + troncos.getPuntos(), 0.1f, viewport.getWorldHeight() - 0.1f);
 
         batch.end();
     }

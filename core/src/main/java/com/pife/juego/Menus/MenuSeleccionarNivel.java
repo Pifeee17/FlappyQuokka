@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.pife.juego.Idiomas.Idiomas;
 import com.pife.juego.Main;
 import com.pife.juego.Niveles.PantallaNivel1;
+import com.pife.juego.Niveles.PantallaNivel2;
 import com.pife.juego.Pantallas.PantallaSeleccionModos;
 
 public class MenuSeleccionarNivel implements Screen {
@@ -130,7 +131,7 @@ public class MenuSeleccionarNivel implements Screen {
             } else if (btnNivel2.getBoundingRectangle().contains(touch.x, touch.y)) {
 
                 if (nivel2Desbloqueado) {
-                    // game.setScreen(new PantallaNivel2(game));
+                    game.setScreen(new PantallaNivel2(game));
                     Gdx.app.log("NIVEL", "NIVEL 2");
                 } else {
                     Gdx.app.log("BLOQUEADO", "Nivel 2 bloqueado");

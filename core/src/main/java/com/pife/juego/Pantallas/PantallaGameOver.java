@@ -20,6 +20,7 @@ public class PantallaGameOver implements Screen {
 
     private SpriteBatch batch;
     private Texture fondoGameOver;
+
     private Texture txtBoton;
     private FitViewport viewport;
     private Sprite btnReintentar, btnMenu;

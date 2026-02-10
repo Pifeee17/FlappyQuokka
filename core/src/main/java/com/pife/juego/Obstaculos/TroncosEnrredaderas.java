@@ -13,7 +13,8 @@ public class TroncosEnrredaderas {
 
     public enum Skin {
         NORMAL,
-        NIEVE
+        NIEVE,
+        CUEVA
     }
 
     private Array<Sprite> abajo = new Array<Sprite>();
@@ -56,9 +57,12 @@ public class TroncosEnrredaderas {
         if (skin == Skin.NIEVE) {
             texAbajo = new Texture("Obstaculos/tronco vertical_Nieve.png");
             texArriba = new Texture("Obstaculos/Enrredadera_Vertical_Nieve.png");
-        } else {
+        } else if(skin == Skin.NORMAL){
             texAbajo = new Texture("Obstaculos/tronco vertical.png");
             texArriba = new Texture("Obstaculos/Enrredadera_Vertical.png");
+        } else if (skin == Skin.CUEVA) {
+            texAbajo = new Texture("Obstaculos/Estalagmita.png");
+            texArriba = new Texture("Obstaculos/Estalactita.png");
         }
     }
 
