@@ -1,4 +1,4 @@
-package com.pife.juego.Pantallas;
+package com.pife.juego.Niveles;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -10,6 +10,7 @@ import com.pife.juego.Idiomas.Idiomas;
 import com.pife.juego.Main;
 import com.pife.juego.Menus.MenuSeleccionarNivel;
 import com.pife.juego.Obstaculos.TroncosEnrredaderas;
+import com.pife.juego.Pantallas.PantallaGameOver;
 import com.pife.juego.Personajes.Quokky;
 
 public class PantallaNivel1 implements Screen {

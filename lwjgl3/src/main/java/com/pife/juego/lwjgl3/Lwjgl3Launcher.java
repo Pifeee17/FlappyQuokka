@@ -31,8 +31,8 @@ public class Lwjgl3Launcher {
         configuration.setWindowedMode(640, 480);
         //// You can change these files; they are in lwjgl3/src/main/resources/ .
         //// They can also be loaded from the root of assets/ .
-        configuration.setWindowIcon("ic_launcher_quokka_png_round.png", "ic_launcher_quokka_png.png", "ic_launcher_quokka_png_foreground.png", "ic_launcher_quokka_png_round.png");
-//        configuration.setWindowIcon("ic_launcher.png", "ic_launcher.png", "ic_launcher.png", "ic_launcher.png");
+//        configuration.setWindowIcon("ic_launcher_quokka_png_round.png", "ic_launcher_quokka_png.png", "ic_launcher_quokka_png_foreground.png", "ic_launcher_quokka_png_round.png");
+       configuration.setWindowIcon("libgdx16.png", "libgdx32.png", "libgdx64.png", "libgdx128.png");
 
         //// This should improve compatibility with Windows machines with buggy OpenGL drivers, Macs
         //// with Apple Silicon that have to emulate compatibility with OpenGL anyway, and more.

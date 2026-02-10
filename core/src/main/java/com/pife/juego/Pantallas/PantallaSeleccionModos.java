@@ -70,7 +70,10 @@ public class PantallaSeleccionModos implements Screen {
         btnNiveles.draw(batch);
         btnVolver.draw(batch);
 
+        font.setColor(Color.WHITE);
         font.draw(batch, Idiomas.t("select"), 1.15f, 8f - 1f);
+
+        font.setColor(new Color(0.1f,0.4f,0.1f,1));
         font.draw(batch, Idiomas.t("arcade"), btnArcade.getX() + 1f, btnArcade.getY() + 1.1f);
         font.draw(batch, Idiomas.t("tipes"), btnNiveles.getX() + 0.6f, btnNiveles.getY() + 1.1f);
         font.draw(batch, Idiomas.t("back"), btnVolver.getX() + 1f, btnVolver.getY() + 0.6f);
