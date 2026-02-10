@@ -88,10 +88,16 @@ public class PantallaNivel1 implements Screen {
 
             int superados = troncos.getPuntos();
             if (superados >= 10) {
+
+                //Desbloqueo del nivel 2 al pasar el nivel
+                game.getPrefs().putBoolean("nivel2_desbloqueado", true);
+                game.getPrefs().flush();
+
                 nivelCompletado = true;
                 game.setScreen(new MenuSeleccionarNivel(game));
                 return;
             }
+
 
             // Colisión (solo mientras se juega)
             if (troncos.colisiona(quokky.getHitbox())) {

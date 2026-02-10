@@ -18,7 +18,7 @@ import com.pife.juego.Pantallas.PantallaSeleccionModos;
 public class MenuSeleccionarNivel implements Screen {
 
     private Sprite btnNivel1, btnNivel2, btnVolver;
-    private Texture botonesNieve, botonesCueva, botonVolver;
+    private Texture botonesNieve, botonesCueva, botonBloqueado, botonVolver;
     private BitmapFont font;
     private FitViewport viewport;
     private Main game;
@@ -27,7 +27,9 @@ public class MenuSeleccionarNivel implements Screen {
     private Texture image;
     private Sprite im;
 
+    private boolean nivel2Desbloqueado;
     private int numero = 1;
+
     public MenuSeleccionarNivel(Main game) {
         this.game = game;
         font = game.fuente;
@@ -38,10 +40,10 @@ public class MenuSeleccionarNivel implements Screen {
 
         Gdx.app.log("SELECCIÓN", "Menu Selección Niveles");
 
-        //Musica de fondo
+        // Música
         game.reproducirMusica("MusicaDeFondo/sonido-menu.mp3");
 
-        //Idiomas
+        // Idiomas
         String idioma = game.getPrefs().getString("idioma", "ES");
         Idiomas.cargar(idioma);
 
@@ -57,20 +59,32 @@ public class MenuSeleccionarNivel implements Screen {
 
         botonesNieve = new Texture("Botones/Boton_Nieve.png");
         botonesCueva = new Texture("Botones/Boton_Cueva.png");
+        botonBloqueado = new Texture("Botones/Boton_Bloqueado.png");
         botonVolver = new Texture("Botones/Boton_Volver.png");
 
         btnNivel1 = new Sprite(botonesNieve);
         btnNivel2 = new Sprite(botonesCueva);
         btnVolver = new Sprite(botonVolver);
+
         float w = 3f;
         float h = 1f;
 
         float x = 1f;
         float yBase = 8f - 5f;
 
-        btnNivel1.setBounds(x, yBase + 2.5F, w, h);
-        btnNivel2.setBounds(x, yBase + 1.3F, w, h);
+        btnNivel1.setBounds(x, yBase + 2.5f, w, h);
+        btnNivel2.setBounds(x, yBase + 1.3f, w, h);
         btnVolver.setBounds(1.1f, 1f, w, h);
+
+        //Leer si el nivel 2 está desbloqueado
+        nivel2Desbloqueado = game.getPrefs().getBoolean("nivel2_desbloqueado", false);
+
+        // Cambiar textura según estado
+        if (!nivel2Desbloqueado) {
+            btnNivel2.setTexture(botonBloqueado);
+        } else {
+            btnNivel2.setTexture(botonesCueva);
+        }
     }
 
     @Override
@@ -86,12 +100,22 @@ public class MenuSeleccionarNivel implements Screen {
         btnNivel2.draw(batch);
         btnVolver.draw(batch);
 
+        // Textos
         font.setColor(Color.WHITE);
-        font.draw(batch, Idiomas.t("pick"),  1f, 8f - 1f);
-        font.setColor(new Color(0.1f,0.4f,0.1f,1));
-        font.draw(batch, Idiomas.t("level") + " " + numero, btnNivel1.getX() + 1.05f, btnNivel1.getY() + 0.57f);
-        font.draw(batch, Idiomas.t("level") + " " + (numero + 1), btnNivel2.getX() + 1f, btnNivel2.getY() + 0.57f);
-        font.draw(batch, Idiomas.t("back"), btnVolver.getX() + 1.2f, btnVolver.getY() + 0.6f);
+        font.draw(batch, Idiomas.t("pick"), 1f, 8f - 1f);
+
+        font.setColor(new Color(0.1f, 0.4f, 0.1f, 1f));
+        font.draw(batch, Idiomas.t("level") + " " + numero,
+            btnNivel1.getX() + 1.05f, btnNivel1.getY() + 0.57f);
+
+        if (nivel2Desbloqueado) {
+            font.draw(batch, Idiomas.t("level") + " " + (numero + 1),
+                btnNivel2.getX() + 1f, btnNivel2.getY() + 0.57f);
+        }
+
+
+        font.draw(batch, Idiomas.t("back"),
+            btnVolver.getX() + 1.2f, btnVolver.getY() + 0.6f);
 
         batch.end();
 
@@ -104,38 +128,37 @@ public class MenuSeleccionarNivel implements Screen {
                 Gdx.app.log("NIVEL", "NIVEL 1");
 
             } else if (btnNivel2.getBoundingRectangle().contains(touch.x, touch.y)) {
-               //game.setScreen(new PantallaNivel2(game));
-               Gdx.app.log("NIVEL", "NIVEL 2");
-        } else if (btnVolver.getBoundingRectangle().contains(touch.x, touch.y)) {
+
+                if (nivel2Desbloqueado) {
+                    // game.setScreen(new PantallaNivel2(game));
+                    Gdx.app.log("NIVEL", "NIVEL 2");
+                } else {
+                    Gdx.app.log("BLOQUEADO", "Nivel 2 bloqueado");
+                    // aquí puedes añadir sonido o vibración
+                }
+
+            } else if (btnVolver.getBoundingRectangle().contains(touch.x, touch.y)) {
                 game.setScreen(new PantallaSeleccionModos(game));
                 Gdx.app.log("VOLVER", "VOLVER A LA SELECCION DEL MODO");
             }
         }
     }
 
-    @Override
-    public void resize(int width, int height) {
+    @Override public void resize(int width, int height) {
         viewport.update(width, height, true);
     }
 
-    @Override
-    public void pause() {
-    }
-
-    @Override
-    public void resume() {
-    }
-
-    @Override
-    public void hide() {
-    }
+    @Override public void pause() {}
+    @Override public void resume() {}
+    @Override public void hide() {}
 
     @Override
     public void dispose() {
         batch.dispose();
         image.dispose();
-        font.dispose();
         botonesNieve.dispose();
         botonesCueva.dispose();
+        botonBloqueado.dispose();
+        botonVolver.dispose();
     }
 }
