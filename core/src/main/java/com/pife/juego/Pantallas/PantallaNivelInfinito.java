@@ -68,8 +68,8 @@ public class PantallaNivelInfinito implements Screen {
 
     private void update(float delta) {
         // Fondo
-        fondo1X -= velocidadFondo * delta;
-        fondo2X -= velocidadFondo * delta;
+        fondo1X = fondo1X - velocidadFondo * delta;
+        fondo2X = fondo2X - velocidadFondo * delta;
 
         if (fondo1X + viewport.getWorldWidth() <= 0) {
             fondo1X = fondo2X + viewport.getWorldWidth();
@@ -85,9 +85,9 @@ public class PantallaNivelInfinito implements Screen {
         // Colisión
         if (troncos.colisiona(quokky.getHitbox())) {
             game.setScreen(new PantallaGameOver(game, new PantallaNivelInfinito(game)));
-
         }
     }
+
 
     @Override
     public void render(float delta) {

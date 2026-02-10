@@ -80,7 +80,7 @@ public class PantallaOpciones implements Screen {
         btnMusica.setBounds(x, yBase, w, h);
         btnVibracion.setBounds(x, yBase - 1.2f, w, h);
         btnIdioma.setBounds(x, yBase - 2.4f, w, h);
-        btnVolver.setBounds(x, yBase - 3.6f, w, h);
+        btnVolver.setBounds(x + 0.8f, yBase - 3.6f, 2.2f, 0.5f);
 
     }
 
@@ -119,7 +119,7 @@ public class PantallaOpciones implements Screen {
 
         // VOLVER
         // (mantengo tu alineación original del botón volver)
-        font.draw(batch, Idiomas.t("back"), btnVolver.getX() + 1.6f, btnVolver.getY() + 0.85f);
+        font.draw(batch, Idiomas.t("back"), btnVolver.getX() + 1f, btnVolver.getY() + 0.35f);
 
         batch.end();
 
