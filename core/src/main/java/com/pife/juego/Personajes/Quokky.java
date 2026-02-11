@@ -13,7 +13,8 @@ public class Quokky {
     public enum Skin {
         NORMAL,
         NIEVE,
-        CUEVA
+        CUEVA,
+        PIRAMIDE
     }
 
     private Texture texture_abajo, texture_medio, texture_arriba;
@@ -66,7 +67,10 @@ public class Quokky {
             texture_abajo = new Texture("Personajes/Quokka_Cueva_Alas abajo.png");
             texture_medio = new Texture("Personajes/Quokka_Cueva_Alas medio.png");
             texture_arriba = new Texture("Personajes/Quokka_Cueva_Alas arriba.png");
-
+        } else if (skin == Skin.PIRAMIDE) {
+            texture_abajo = new Texture("Personajes/Quokka_Cueva_Alas abajo.png");
+            texture_medio = new Texture("Personajes/Quokka_Cueva_Alas medio.png");
+            texture_arriba = new Texture("Personajes/Quokka_Cueva_Alas arriba.png");
         }
     }
 

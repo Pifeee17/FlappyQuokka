@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout; // AÑADIDO
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -26,6 +27,8 @@ public class PantallaVictoria implements Screen {
     private FitViewport viewport;
     private Sprite btnSiguiente, btnMenu;
     private BitmapFont font;
+
+    private GlyphLayout layout; // AÑADIDO
 
     public PantallaVictoria(Main game, Screen Siguiente_Nivel) {
         this.game = game;
@@ -57,6 +60,8 @@ public class PantallaVictoria implements Screen {
         btnMenu.setBounds(x, yBase - 0.85f, w, h);
 
         font.setColor(new Color(0.1f, 0.4f, 0.1f, 1f));
+
+        layout = new GlyphLayout(); // AÑADIDO
     }
 
     @Override
@@ -72,10 +77,16 @@ public class PantallaVictoria implements Screen {
         btnSiguiente.draw(batch);
         btnMenu.draw(batch);
 
-        font.draw(batch, Idiomas.t("congra"), 1f, 1f);
+        font.setColor(Color.WHITE);
+        String texto = Idiomas.t("congra");
+        layout.setText(font, texto);
+        float xTexto = (viewport.getWorldWidth() - layout.width) / 2f;
+        float yTexto = 6.8f;
+        font.draw(batch, layout, xTexto, yTexto);
 
-        font.draw(batch, "SIGUIENTE", btnSiguiente.getX() + 0.65f, btnSiguiente.getY() + 0.6f);
-        font.draw(batch, "MENU", btnMenu.getX() + 1.2f, btnMenu.getY() + 0.6f);
+        font.setColor(new Color(0.1f, 0.4f, 0.1f, 1f));
+        font.draw(batch, Idiomas.t("next"), btnSiguiente.getX() + 0.65f, btnSiguiente.getY() + 0.6f);
+        font.draw(batch, Idiomas.t("menu"), btnMenu.getX() + 1.2f, btnMenu.getY() + 0.6f);
 
         batch.end();
 

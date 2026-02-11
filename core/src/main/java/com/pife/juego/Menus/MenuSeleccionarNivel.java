@@ -14,12 +14,13 @@ import com.pife.juego.Idiomas.Idiomas;
 import com.pife.juego.Main;
 import com.pife.juego.Niveles.PantallaNivel1;
 import com.pife.juego.Niveles.PantallaNivel2;
+import com.pife.juego.Niveles.PantallaNivel3;
 import com.pife.juego.Pantallas.PantallaSeleccionModos;
 
 public class MenuSeleccionarNivel implements Screen {
 
-    private Sprite btnNivel1, btnNivel2, btnVolver;
-    private Texture botonesNieve, botonesCueva, botonBloqueado, botonVolver;
+    private Sprite btnNivel1, btnNivel2, btnNivel3, btnVolver;
+    private Texture botonesNieve, botonesPiramide, botonesCueva, botonBloqueado, botonVolver;
     private BitmapFont font;
     private FitViewport viewport;
     private Main game;
@@ -28,7 +29,7 @@ public class MenuSeleccionarNivel implements Screen {
     private Texture image;
     private Sprite im;
 
-    private boolean nivel2Desbloqueado;
+    private boolean nivel2Desbloqueado, nivel3Desbloqueado;
     private int numero = 1;
 
     public MenuSeleccionarNivel(Main game) {
@@ -60,11 +61,13 @@ public class MenuSeleccionarNivel implements Screen {
 
         botonesNieve = new Texture("Botones/Boton_Nieve.png");
         botonesCueva = new Texture("Botones/Boton_Cueva.png");
+        botonesPiramide = new Texture("Botones/Boton_Piramide.png");
         botonBloqueado = new Texture("Botones/Boton_Bloqueado.png");
         botonVolver = new Texture("Botones/Boton_Volver.png");
 
         btnNivel1 = new Sprite(botonesNieve);
         btnNivel2 = new Sprite(botonesCueva);
+        btnNivel3 = new Sprite(botonesPiramide);
         btnVolver = new Sprite(botonVolver);
 
         float w = 3f;
@@ -75,16 +78,27 @@ public class MenuSeleccionarNivel implements Screen {
 
         btnNivel1.setBounds(x, yBase + 2.5f, w, h);
         btnNivel2.setBounds(x, yBase + 1.3f, w, h);
+        btnNivel3.setBounds(x, yBase + 0.1f, w, h);
         btnVolver.setBounds(1.1f, 1f, w, h);
 
         //Leer si el nivel 2 está desbloqueado
         nivel2Desbloqueado = game.getPrefs().getBoolean("nivel2_desbloqueado", false);
+
+        //Leer si el nivel 3 esta desbloqueado
+        nivel3Desbloqueado = game.getPrefs().getBoolean("nivel3_desbloqueado", false);;
 
         // Cambiar textura según estado
         if (!nivel2Desbloqueado) {
             btnNivel2.setTexture(botonBloqueado);
         } else {
             btnNivel2.setTexture(botonesCueva);
+        }
+
+        //Cambiar textura segun estado
+        if (!nivel3Desbloqueado) {
+            btnNivel3.setTexture(botonBloqueado);
+        } else {
+            btnNivel3.setTexture(botonesPiramide);
         }
     }
 
@@ -99,6 +113,7 @@ public class MenuSeleccionarNivel implements Screen {
         im.draw(batch);
         btnNivel1.draw(batch);
         btnNivel2.draw(batch);
+        btnNivel3.draw(batch);
         btnVolver.draw(batch);
 
         // Textos
@@ -112,6 +127,11 @@ public class MenuSeleccionarNivel implements Screen {
         if (nivel2Desbloqueado) {
             font.draw(batch, Idiomas.t("level") + " " + (numero + 1),
                 btnNivel2.getX() + 1f, btnNivel2.getY() + 0.57f);
+        }
+
+        if (nivel3Desbloqueado) {
+            font.draw(batch, Idiomas.t("level") + " " + (numero + 2),
+                btnNivel3.getX() + 1f, btnNivel3.getY() + 0.57f);
         }
 
 
@@ -135,9 +155,17 @@ public class MenuSeleccionarNivel implements Screen {
                     Gdx.app.log("NIVEL", "NIVEL 2");
                 } else {
                     Gdx.app.log("BLOQUEADO", "Nivel 2 bloqueado");
-                    // aquí puedes añadir sonido o vibración
+                    Gdx.input.vibrate(200);
                 }
+            }else if (btnNivel3.getBoundingRectangle().contains(touch.x, touch.y)) {
 
+                    if (nivel3Desbloqueado) {
+                        game.setScreen(new PantallaNivel3(game));
+                        Gdx.app.log("NIVEL", "NIVEL 3");
+                    } else {
+                        Gdx.app.log("BLOQUEADO", "Nivel 3 bloqueado");
+                        Gdx.input.vibrate(200);
+                    }
             } else if (btnVolver.getBoundingRectangle().contains(touch.x, touch.y)) {
                 game.setScreen(new PantallaSeleccionModos(game));
                 Gdx.app.log("VOLVER", "VOLVER A LA SELECCION DEL MODO");

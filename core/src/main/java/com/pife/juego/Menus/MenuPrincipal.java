@@ -1,6 +1,5 @@
 package com.pife.juego.Menus;
 
-import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -8,16 +7,15 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.pife.juego.Constantes;
 import com.pife.juego.Main;
 import com.pife.juego.Pantallas.PantallaNivelInfinito;
 import com.pife.juego.Pantallas.PantallaOpciones;
 import com.pife.juego.Pantallas.PantallaSeleccionModos;
 import com.pife.juego.Idiomas.Idiomas;
-
 
 public class MenuPrincipal implements Screen {
 
@@ -31,6 +29,8 @@ public class MenuPrincipal implements Screen {
     private Texture txtBotones;
 
     private Sprite btnJugar, btnModos, btnOpciones, btnCreditos;
+
+    private GlyphLayout layout;
 
     public MenuPrincipal(Main game) {
         this.game = game;
@@ -49,9 +49,8 @@ public class MenuPrincipal implements Screen {
         String idioma = game.getPrefs().getString("idioma", "ES");
         Idiomas.cargar(idioma);
 
-
         batch = new SpriteBatch();
-
+        layout = new GlyphLayout(); //se usa para centrar el texto
         image = new Texture("Pantallas/Portada-Quokky.png");
         im = new Sprite(image);
 
@@ -77,7 +76,6 @@ public class MenuPrincipal implements Screen {
         btnModos.setBounds(x, yBase - 0.85f, w, h);
         btnOpciones.setBounds(x, yBase - 1.7f, w, h);
         btnCreditos.setBounds(x, yBase - 2.55f, w, h);
-
     }
 
     @Override
@@ -94,11 +92,11 @@ public class MenuPrincipal implements Screen {
         btnOpciones.draw(batch);
         btnCreditos.draw(batch);
 
-        font.draw(batch, Idiomas.t("play"), btnJugar.getX() + 1f, btnJugar.getY() + 0.65f);
-        font.draw(batch, Idiomas.t("modes"), btnModos.getX() + 1f, btnModos.getY() + 0.65f);
-        font.draw(batch, Idiomas.t("options"), btnOpciones.getX() + 0.65f, btnOpciones.getY() + 0.65f);
-        font.draw(batch, Idiomas.t("credits"), btnCreditos.getX() + 0.65f, btnCreditos.getY() + 0.65f);
-
+        //Texto centrado
+        dibujarTextoCentrado(btnJugar, Idiomas.t("play"));
+        dibujarTextoCentrado(btnModos, Idiomas.t("modes"));
+        dibujarTextoCentrado(btnOpciones, Idiomas.t("options"));
+        dibujarTextoCentrado(btnCreditos, Idiomas.t("credits"));
 
         batch.end();
 
@@ -115,6 +113,21 @@ public class MenuPrincipal implements Screen {
             }
         }
     }
+
+    //metodo que centra el texto
+    private void dibujarTextoCentrado(Sprite boton, String texto) {
+
+        layout.setText(font, texto);
+
+        float x = boton.getX() + (boton.getWidth() - layout.width) / 2f;
+
+        // Centramos usando la altura total del botón
+        float y = boton.getY() + (boton.getHeight() - layout.height) / 2f + layout.height + 0.05f;;
+
+        font.draw(batch, layout, x, y);
+    }
+
+
 
     @Override
     public void resize(int width, int height) {
