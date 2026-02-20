@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.pife.juego.Main;
+import com.pife.juego.Pantallas.PantallaCreditos;
 import com.pife.juego.Pantallas.PantallaNivelInfinito;
 import com.pife.juego.Pantallas.PantallaOpciones;
 import com.pife.juego.Pantallas.PantallaSeleccionModos;
@@ -93,6 +94,7 @@ public class MenuPrincipal implements Screen {
         btnCreditos.draw(batch);
 
         //Texto centrado
+        font.setColor(new Color(0.1f, 0.4f, 0.1f, 1f));
         dibujarTextoCentrado(btnJugar, Idiomas.t("play"));
         dibujarTextoCentrado(btnModos, Idiomas.t("modes"));
         dibujarTextoCentrado(btnOpciones, Idiomas.t("options"));
@@ -110,6 +112,8 @@ public class MenuPrincipal implements Screen {
                 game.setScreen(new PantallaSeleccionModos(game));
             } else if (btnOpciones.getBoundingRectangle().contains(touch.x, touch.y)) {
                 game.setScreen(new PantallaOpciones(game));
+            } else if (btnCreditos.getBoundingRectangle().contains(touch.x, touch.y)){
+                game.setScreen(new PantallaCreditos(game));
             }
         }
     }
