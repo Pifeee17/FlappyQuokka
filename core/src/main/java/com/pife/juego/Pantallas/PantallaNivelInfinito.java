@@ -118,6 +118,7 @@ public class PantallaNivelInfinito implements Screen {
         quokky.draw(batch);
 
         // Dibujar puntuación arriba a la izquierda
+        font.setColor(Color.WHITE);
         font.draw(batch, Idiomas.t("points") +": " + troncos.getPuntos(), 0.1f, viewport.getWorldHeight() - 0.1f);
 
         batch.end();
