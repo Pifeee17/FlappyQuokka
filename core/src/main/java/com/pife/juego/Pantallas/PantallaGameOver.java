@@ -17,7 +17,7 @@ public class PantallaGameOver implements Screen {
 
     private Main game;
     private Screen pantallaReintento; //pantalla a la que volver al reintentar
-
+    private boolean vieneDeInfinito;
     private SpriteBatch batch;
     private Texture fondoGameOver;
 
@@ -26,9 +26,10 @@ public class PantallaGameOver implements Screen {
     private Sprite btnReintentar, btnMenu;
     private BitmapFont font;
 
-    public PantallaGameOver(Main game, Screen pantallaReintento) {
+    public PantallaGameOver(Main game, Screen pantallaReintento, boolean vieneDeInfinito) {
         this.game = game;
         this.pantallaReintento = pantallaReintento;
+        this.vieneDeInfinito = vieneDeInfinito;
         this.font = game.fuente;
     }
 
@@ -55,7 +56,7 @@ public class PantallaGameOver implements Screen {
         btnReintentar.setBounds(x, yBase, w, h);
         btnMenu.setBounds(x, yBase - 0.85f, w, h);
 
-        font.setColor(new Color(0.1f, 0.4f, 0.1f, 1f));
+
     }
 
     @Override
@@ -68,6 +69,15 @@ public class PantallaGameOver implements Screen {
         batch.begin();
 
         batch.draw(fondoGameOver, 0f, 0f, viewport.getWorldWidth(), viewport.getWorldHeight());
+
+        if (vieneDeInfinito) {
+            int record = game.getPrefs().getInteger("record_infinito", 0);
+            font.setColor(Color.WHITE);
+            font.draw(batch, "RECORD: " + record,
+                btnReintentar.getX() + 0.65f,
+                viewport.getWorldHeight() - 1f);
+        }
+        font.setColor(new Color(0.1f, 0.4f, 0.1f, 1f));
         btnReintentar.draw(batch);
         btnMenu.draw(batch);
 

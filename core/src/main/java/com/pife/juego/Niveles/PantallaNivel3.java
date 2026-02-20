@@ -103,7 +103,7 @@ public class PantallaNivel3 implements Screen {
 
             // Colisión (solo mientras se juega)
             if (troncos.colisiona(quokky.getHitbox())) {
-                game.setScreen(new PantallaGameOver(game, new PantallaNivel3(game)));
+                game.setScreen(new PantallaGameOver(game, new PantallaNivel3(game), false));
             }
         }
     }

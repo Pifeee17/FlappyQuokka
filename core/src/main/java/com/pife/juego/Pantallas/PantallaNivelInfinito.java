@@ -83,7 +83,22 @@ public class PantallaNivelInfinito implements Screen {
 
         // Colisión
         if (troncos.colisiona(quokky.getHitbox())) {
-            game.setScreen(new PantallaGameOver(game, new PantallaNivelInfinito(game)));
+
+            int puntosActuales = troncos.getPuntos();
+
+            // Obtener récord guardado
+            int recordGuardado = game.getPrefs().getInteger("record_infinito", 0);
+
+            // Si supera el récord, lo guardamos
+            if (puntosActuales > recordGuardado) {
+                game.getPrefs().putInteger("record_infinito", puntosActuales);
+                game.getPrefs().flush();
+            }
+
+            // true = viene del modo infinito
+            game.setScreen(new PantallaGameOver(game,
+                new PantallaNivelInfinito(game),
+                true));
         }
     }
 
