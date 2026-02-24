@@ -13,41 +13,51 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.pife.juego.Idiomas.Idiomas;
 import com.pife.juego.Main;
-import com.pife.juego.Pantallas.PantallaNivelInfinito;
+import com.pife.juego.Pantallas.Pausable;
 
 public class MenuPausa implements Screen {
 
-    private Main game;
-    private Texture fondo;
-    private SpriteBatch batch;
-    private FitViewport viewport;
+    private final Main game;
 
+    private Texture fondo;
     private Texture texturaBoton;
 
-    private PantallaNivelInfinito pantallaAnterior;
+    private SpriteBatch batch;
+    private FitViewport viewport;
 
     private Sprite btnReanudar;
     private Sprite btnReiniciar;
     private Sprite btnMenu;
 
-    private GlyphLayout layout;
-    private BitmapFont font;
+    private final GlyphLayout layout;
+    private final BitmapFont font;
 
-    public MenuPausa(Main game, PantallaNivelInfinito pantallaAnterior) {
+    // Referencia a la pantalla que estaba jugando (infinito o nivel 1/2/3)
+    private final Pausable pantallaAnterior;
+
+    public MenuPausa(Main game, Pausable pantallaAnterior) {
         this.game = game;
         this.pantallaAnterior = pantallaAnterior;
+
         this.font = game.fuente;
-        viewport = new FitViewport(5, 8);
+        this.layout = new GlyphLayout();
+
+        this.viewport = new FitViewport(5, 8);
     }
 
     @Override
     public void show() {
 
+        // IMPORTANTE: asegura viewport listo (por ejemplo en desktop resize)
+        viewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
+
         batch = new SpriteBatch();
-        layout = new GlyphLayout();
 
         fondo = new Texture("Pantallas/FondoNivelesQuokky.png");
         texturaBoton = new Texture("Botones/Boton.png");
+
+        // Fuente (tu tamaño ya ajustado)
+        font.getData().setScale(0.006f);
 
         btnReanudar = new Sprite(texturaBoton);
         btnReiniciar = new Sprite(texturaBoton);
@@ -77,7 +87,7 @@ public class MenuPausa implements Screen {
         // Fondo
         batch.draw(fondo, 0, 0, viewport.getWorldWidth(), viewport.getWorldHeight());
 
-        // Titulo
+        // Título "PAUSA"
         font.setColor(Color.WHITE);
         layout.setText(font, Idiomas.t("pausa"));
         float tituloX = viewport.getWorldWidth() / 2f - layout.width / 2f;
@@ -88,8 +98,8 @@ public class MenuPausa implements Screen {
         btnReiniciar.draw(batch);
         btnMenu.draw(batch);
 
+        // Texto de botones
         font.setColor(new Color(0.1f, 0.4f, 0.1f, 1f));
-
         dibujarTextoCentrado(btnReanudar, Idiomas.t("reanudar"));
         dibujarTextoCentrado(btnReiniciar, Idiomas.t("reiniciar"));
         dibujarTextoCentrado(btnMenu, Idiomas.t("menu"));
@@ -101,24 +111,26 @@ public class MenuPausa implements Screen {
 
     private void detectarToque() {
 
-        if (Gdx.input.justTouched()) {
+        if (!Gdx.input.justTouched()) return;
 
-            Vector3 touch = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-            viewport.unproject(touch);
+        Vector3 touch = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+        viewport.unproject(touch);
 
-            if (btnReanudar.getBoundingRectangle().contains(touch.x, touch.y)) {
+        if (btnReanudar.getBoundingRectangle().contains(touch.x, touch.y)) {
 
-                pantallaAnterior.reanudarJuego();
-                game.setScreen(pantallaAnterior);
+            // Reanuda la MISMA instancia del nivel
+            pantallaAnterior.reanudarJuego();
+            game.setScreen((Screen) pantallaAnterior);
 
-            } else if (btnReiniciar.getBoundingRectangle().contains(touch.x, touch.y)) {
+        } else if (btnReiniciar.getBoundingRectangle().contains(touch.x, touch.y)) {
 
-                game.setScreen(new PantallaNivelInfinito(game));
+            // Reinicia creando una pantalla NUEVA del mismo nivel
+            game.setScreen(pantallaAnterior.reiniciar());
 
-            } else if (btnMenu.getBoundingRectangle().contains(touch.x, touch.y)) {
+        } else if (btnMenu.getBoundingRectangle().contains(touch.x, touch.y)) {
 
-                game.setScreen(new MenuPrincipal(game));
-            }
+            // Ir al menú principal
+            game.setScreen(new MenuPrincipal(game));
         }
     }
 
@@ -127,7 +139,6 @@ public class MenuPausa implements Screen {
         layout.setText(font, texto);
 
         float x = boton.getX() + (boton.getWidth() - layout.width) / 2f;
-
         float y = boton.getY() + (boton.getHeight() - layout.height) / 2f + layout.height + 0.05f;
 
         font.draw(batch, layout, x, y);
@@ -144,8 +155,9 @@ public class MenuPausa implements Screen {
 
     @Override
     public void dispose() {
-        batch.dispose();
-        fondo.dispose();
-        texturaBoton.dispose();
+        if (batch != null) batch.dispose();
+        if (fondo != null) fondo.dispose();
+        if (texturaBoton != null) texturaBoton.dispose();
+        // NO hacer font.dispose(); porque la fuente es global (game.fuente)
     }
 }

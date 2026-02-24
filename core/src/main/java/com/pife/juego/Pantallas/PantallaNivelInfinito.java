@@ -12,8 +12,9 @@ import com.pife.juego.Main;
 import com.pife.juego.Personajes.Quokky;
 import com.pife.juego.Obstaculos.TroncosEnrredaderas;
 import com.pife.juego.Idiomas.Idiomas;
+import com.pife.juego.Pantallas.Pausable;
 
-public class PantallaNivelInfinito implements Screen {
+public class PantallaNivelInfinito implements Screen, Pausable {
 
     private Main game;
     private SpriteBatch batch;
@@ -199,5 +200,10 @@ public class PantallaNivelInfinito implements Screen {
 
     public void reanudarJuego() {
         pausado = false;
+    }
+
+    @Override
+    public Screen reiniciar() {
+        return new PantallaNivelInfinito(game);
     }
 }
