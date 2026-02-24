@@ -1,7 +1,9 @@
 package com.pife.juego.Niveles;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -13,19 +15,27 @@ import com.pife.juego.Obstaculos.TroncosEnrredaderas;
 import com.pife.juego.Pantallas.PantallaGameOver;
 import com.pife.juego.Pantallas.PantallaVictoria;
 import com.pife.juego.Personajes.Quokky;
+import com.badlogic.gdx.math.Vector3;
+import com.pife.juego.Menus.MenuPausa;
+import com.pife.juego.Pantallas.Pausable;
 
-public class PantallaNivel1 implements Screen {
+public class PantallaNivel1 implements Screen, Pausable {
 
     private Main game;
     private SpriteBatch batch;
     private FitViewport viewport;
-
+    // Botón pausa
+    private Texture botonPausa;
+    private float botonPausaSize = 0.8f;
+    private float botonPausaX;
+    private float botonPausaY;
+    private boolean pausado = false;
     private com.badlogic.gdx.graphics.Texture fondoTex1;
     private com.badlogic.gdx.graphics.Texture fondoTex2;
     private float fondo1X;
     private float fondo2X;
     private float velocidadFondo = 1.5f;
-
+    private boolean inicializado = false;
     private Quokky quokky;
     private TroncosEnrredaderas troncos;
 
@@ -41,6 +51,12 @@ public class PantallaNivel1 implements Screen {
 
     @Override
     public void show() {
+
+        if (inicializado == true) {
+            return;
+        }
+        inicializado = true;
+
         batch = new SpriteBatch();
 
         String idioma = game.getPrefs().getString("idioma", "ES");
@@ -51,6 +67,13 @@ public class PantallaNivel1 implements Screen {
 
         fondo1X = 0f;
         fondo2X = viewport.getWorldWidth();
+
+        // Botón pausa
+        botonPausa = new com.badlogic.gdx.graphics.Texture("Botones/Boton_Pausa.png");
+        botonPausaX = viewport.getWorldWidth() - botonPausaSize - 0.2f;
+        botonPausaY = viewport.getWorldHeight() - botonPausaSize - 0.2f;
+
+        pausado = false;           // importante al reiniciar
 
         game.reproducirMusica("MusicaDeFondo/sonido-nieve.mp3");
 
@@ -112,7 +135,25 @@ public class PantallaNivel1 implements Screen {
 
     @Override
     public void render(float delta) {
-        update(delta);
+
+        // Detectar pausa
+        if (Gdx.input.justTouched()) {
+            Vector3 touch = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+            viewport.unproject(touch);
+
+            if (touch.x >= botonPausaX && touch.x <= botonPausaX + botonPausaSize
+                && touch.y >= botonPausaY && touch.y <= botonPausaY + botonPausaSize) {
+
+                pausado = true;
+                game.setScreen(new MenuPausa(game, this));
+                return;
+            }
+        }
+
+        // Solo actualiza si NO está pausado
+        if (!pausado) {
+            update(delta);
+        }
 
         ScreenUtils.clear(0f, 0f, 0f, 1f);
 
@@ -123,8 +164,7 @@ public class PantallaNivel1 implements Screen {
 
         drawFondo();
 
-        //No dibuja obstáculos extra si ya se completó el nivel
-        if (nivelCompletado == false) {
+        if (!nivelCompletado) {
             troncos.draw(batch);
         }
 
@@ -135,12 +175,13 @@ public class PantallaNivel1 implements Screen {
 
         int superados = troncos.getPuntos();
         int cuentaAtras = 5 - superados;
-        if (cuentaAtras < 0) {
-            cuentaAtras = 0;
-        }
+        if (cuentaAtras < 0) cuentaAtras = 0;
 
         String texto = Idiomas.t("obstacles") + ": " + cuentaAtras;
         font.draw(batch, texto, textoX, textoY);
+
+        // DIBUJA el botón pausa
+        batch.draw(botonPausa, botonPausaX, botonPausaY, botonPausaSize, botonPausaSize);
 
         batch.end();
     }
@@ -173,5 +214,17 @@ public class PantallaNivel1 implements Screen {
         fondoTex2.dispose();
         quokky.dispose();
         troncos.dispose();
+        botonPausa.dispose();
+    }
+
+    @Override
+    public void reanudarJuego() {
+        pausado = false;
+        font.setColor(Color.BLACK);
+    }
+
+    @Override
+    public Screen reiniciar() {
+        return new PantallaNivel1(game);
     }
 }
