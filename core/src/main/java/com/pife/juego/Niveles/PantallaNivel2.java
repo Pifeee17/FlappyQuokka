@@ -1,5 +1,6 @@
 package com.pife.juego.Niveles;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -13,8 +14,12 @@ import com.pife.juego.Obstaculos.TroncosEnrredaderas;
 import com.pife.juego.Pantallas.PantallaGameOver;
 import com.pife.juego.Pantallas.PantallaVictoria;
 import com.pife.juego.Personajes.Quokky;
+import com.badlogic.gdx.math.Vector3;
+import com.pife.juego.Menus.MenuPausa;
+import com.pife.juego.Pantallas.Pausable;
+import com.badlogic.gdx.graphics.Texture;
 
-public class PantallaNivel2 implements Screen {
+public class PantallaNivel2 implements Screen, Pausable {
 
     private Main game;
     private SpriteBatch batch;
@@ -25,7 +30,15 @@ public class PantallaNivel2 implements Screen {
     private float fondo1X;
     private float fondo2X;
     private float velocidadFondo = 1.5f;
+    // Botón pausa
+    private Texture botonPausa;
+    private float botonPausaSize = 0.8f;
+    private float botonPausaX;
+    private float botonPausaY;
+    private boolean pausado = false;
 
+    // Para evitar reinicializar al volver de pausa
+    private boolean inicializado = false;
     private Quokky quokky;
     private TroncosEnrredaderas troncos;
 
@@ -41,16 +54,30 @@ public class PantallaNivel2 implements Screen {
 
     @Override
     public void show() {
+
+        if (inicializado) {
+            return;   //evita reiniciar al volver de pausa
+        }
+
+        inicializado = true;
+
         batch = new SpriteBatch();
 
         String idioma = game.getPrefs().getString("idioma", "ES");
         Idiomas.cargar(idioma);
 
-        fondoTex1 = new com.badlogic.gdx.graphics.Texture("Pantallas/Fondo-Cueva.png");
-        fondoTex2 = new com.badlogic.gdx.graphics.Texture("Pantallas/Fondo-Cueva.png");
+        fondoTex1 = new Texture("Pantallas/Fondo-Cueva.png");
+        fondoTex2 = new Texture("Pantallas/Fondo-Cueva.png");
 
         fondo1X = 0f;
         fondo2X = viewport.getWorldWidth();
+
+        // Botón pausa
+        botonPausa = new Texture("Botones/Boton_Pausa.png");
+        botonPausaX = viewport.getWorldWidth() - botonPausaSize - 0.2f;
+        botonPausaY = viewport.getWorldHeight() - botonPausaSize - 0.2f;
+
+        pausado = false;
 
         game.reproducirMusica("MusicaDeFondo/sonido-cueva.mp3");
 
@@ -110,7 +137,24 @@ public class PantallaNivel2 implements Screen {
 
     @Override
     public void render(float delta) {
-        update(delta);
+
+        // Detectar pausa
+        if (Gdx.input.justTouched()) {
+            Vector3 touch = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+            viewport.unproject(touch);
+
+            if (touch.x >= botonPausaX && touch.x <= botonPausaX + botonPausaSize
+                && touch.y >= botonPausaY && touch.y <= botonPausaY + botonPausaSize) {
+
+                pausado = true;
+                game.setScreen(new MenuPausa(game, this));
+                return;
+            }
+        }
+
+        if (!pausado) {
+            update(delta);
+        }
 
         ScreenUtils.clear(0f, 0f, 0f, 1f);
 
@@ -121,8 +165,7 @@ public class PantallaNivel2 implements Screen {
 
         drawFondo();
 
-        //No dibuja obstáculos extra si ya se completó el nivel
-        if (nivelCompletado == false) {
+        if (!nivelCompletado) {
             troncos.draw(batch);
         }
 
@@ -133,13 +176,14 @@ public class PantallaNivel2 implements Screen {
 
         int superados = troncos.getPuntos();
         int cuentaAtras = 10 - superados;
-        if (cuentaAtras < 0) {
-            cuentaAtras = 0;
-        }
+        if (cuentaAtras < 0) cuentaAtras = 0;
 
         font.setColor(Color.WHITE);
         String texto = Idiomas.t("obstacles") + ": " + cuentaAtras;
         font.draw(batch, texto, textoX, textoY);
+
+        // Dibujar botón pausa
+        batch.draw(botonPausa, botonPausaX, botonPausaY, botonPausaSize, botonPausaSize);
 
         batch.end();
     }
@@ -172,5 +216,17 @@ public class PantallaNivel2 implements Screen {
         fondoTex2.dispose();
         quokky.dispose();
         troncos.dispose();
+        botonPausa.dispose();
+    }
+
+    @Override
+    public void reanudarJuego() {
+        pausado = false;
+        font.setColor(Color.WHITE);
+    }
+
+    @Override
+    public Screen reiniciar() {
+        return new PantallaNivel2(game);
     }
 }
