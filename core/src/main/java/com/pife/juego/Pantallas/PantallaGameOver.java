@@ -5,11 +5,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.pife.juego.Idiomas.Idiomas;
 import com.pife.juego.Main;
 import com.pife.juego.Menus.MenuPrincipal;
 
@@ -20,7 +22,7 @@ public class PantallaGameOver implements Screen {
     private boolean vieneDeInfinito;
     private SpriteBatch batch;
     private Texture fondoGameOver;
-
+    private GlyphLayout layout;
     private Texture txtBoton;
     private FitViewport viewport;
     private Sprite btnReintentar, btnMenu;
@@ -41,6 +43,8 @@ public class PantallaGameOver implements Screen {
         batch = new SpriteBatch();
         fondoGameOver = new Texture("Pantallas/PantallaGameOver.png");
         txtBoton = new Texture("Botones/Boton.png");
+
+        layout = new GlyphLayout();
 
         viewport = new FitViewport(5, 8);
 
@@ -77,12 +81,18 @@ public class PantallaGameOver implements Screen {
                 btnReintentar.getX() + 0.65f,
                 viewport.getWorldHeight() - 1f);
         }
+        else {
+            font.setColor(Color.WHITE);
+            font.draw(batch, Idiomas.t("perdiste"),
+                btnReintentar.getX() + 0.7f,
+                viewport.getWorldHeight() - 1f);
+        }
         font.setColor(new Color(0.1f, 0.4f, 0.1f, 1f));
         btnReintentar.draw(batch);
         btnMenu.draw(batch);
 
-        font.draw(batch, "REINTENTAR", btnReintentar.getX() + 0.65f, btnReintentar.getY() + 0.6f);
-        font.draw(batch, "MENU", btnMenu.getX() + 1.2f, btnMenu.getY() + 0.6f);
+        dibujarTextoCentrado(btnReintentar, Idiomas.t("reintentar"));
+        dibujarTextoCentrado(btnMenu, Idiomas.t("menu"));
 
         batch.end();
 
@@ -111,5 +121,16 @@ public class PantallaGameOver implements Screen {
         batch.dispose();
         fondoGameOver.dispose();
         txtBoton.dispose();
+    }
+    private void dibujarTextoCentrado(Sprite boton, String texto) {
+
+        layout.setText(font, texto);
+
+        float x = boton.getX() + (boton.getWidth() - layout.width) / 2f;
+
+        // Centramos usando la altura total del botón
+        float y = boton.getY() + (boton.getHeight() - layout.height) / 2f + layout.height + 0.05f;;
+
+        font.draw(batch, layout, x, y);
     }
 }
