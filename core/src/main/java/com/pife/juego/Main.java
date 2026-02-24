@@ -38,9 +38,7 @@ public class Main extends Game {
 
         // Fuente
         fuente = new BitmapFont(Gdx.files.internal("Fuente/Early GameBoy.fnt"));
-        escalado = viewport.getWorldHeight() / (60f * 10);
-        fuente.getData().setScale(escalado * 0.6f);
-        fuente.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        fuente.getData().setScale(0.6f);   // Ajusta este valor si la quieres más grande o pequeña
         fuente.setUseIntegerPositions(false);
 
 

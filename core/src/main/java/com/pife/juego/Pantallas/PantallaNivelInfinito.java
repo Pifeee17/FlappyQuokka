@@ -2,6 +2,7 @@ package com.pife.juego.Pantallas;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -29,7 +30,13 @@ public class PantallaNivelInfinito implements Screen {
     // Font para puntuación
     private BitmapFont font;
 
-    //Musica de fondo
+    // Boton de pausa
+    private com.badlogic.gdx.graphics.Texture botonPausa;
+    private float botonPausaSize = 0.8f;
+    private float botonPausaX;
+    private float botonPausaY;
+    private boolean pausado = false;
+    private boolean inicializado = false;
 
     public PantallaNivelInfinito(Main game) {
         this.game = game;
@@ -38,12 +45,18 @@ public class PantallaNivelInfinito implements Screen {
 
     @Override
     public void show() {
+
+        if (inicializado == true) {
+            return;
+        }
+
+        inicializado = true;
+
         batch = new SpriteBatch();
 
         //Idiomas
         String idioma = game.getPrefs().getString("idioma", "ES");
         Idiomas.cargar(idioma);
-
 
         // Fondo
         fondoTex1 = new com.badlogic.gdx.graphics.Texture("Pantallas/Fondo-Jungla.png");
@@ -51,17 +64,20 @@ public class PantallaNivelInfinito implements Screen {
         fondo1X = 0;
         fondo2X = viewport.getWorldWidth();
 
+        // Boton pausa
+        botonPausa = new com.badlogic.gdx.graphics.Texture("Botones/Boton_Pausa.png");
+
+        botonPausaX = viewport.getWorldWidth() - botonPausaSize - 0.2f;
+        botonPausaY = viewport.getWorldHeight() - botonPausaSize - 0.2f;
+
         //Musica de Fondo
         game.reproducirMusica("MusicaDeFondo/sonido-jungla.mp3");
 
         // Entidades
         quokky = new Quokky(viewport, Quokky.Skin.NORMAL);
-        troncos = new TroncosEnrredaderas(viewport, TroncosEnrredaderas.Skin.NORMAL, -1); //El -1 es que son pares infinitos
+        troncos = new TroncosEnrredaderas(viewport, TroncosEnrredaderas.Skin.NORMAL, -1);
 
-        // Font para puntos usando la fuente de Main
         font = game.fuente;
-
-        // Escalado de fuente según viewport y densidad
         font.setColor(Color.BLACK);
     }
 
@@ -102,10 +118,32 @@ public class PantallaNivelInfinito implements Screen {
         }
     }
 
-
     @Override
     public void render(float delta) {
-        update(delta);
+
+        if (Gdx.input.justTouched()) {
+
+            Vector3 touch = new Vector3();
+            touch.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+            viewport.unproject(touch);
+
+            if (touch.x >= botonPausaX) {
+                if (touch.x <= botonPausaX + botonPausaSize) {
+                    if (touch.y >= botonPausaY) {
+                        if (touch.y <= botonPausaY + botonPausaSize) {
+
+                            pausado = true;
+                            game.setScreen(new com.pife.juego.Menus.MenuPausa(game, this));
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (pausado == false) {
+            update(delta);
+        }
 
         ScreenUtils.clear(0, 0, 0, 1);
 
@@ -117,9 +155,10 @@ public class PantallaNivelInfinito implements Screen {
         troncos.draw(batch);
         quokky.draw(batch);
 
-        // Dibujar puntuación arriba a la izquierda
         font.setColor(Color.WHITE);
-        font.draw(batch, Idiomas.t("points") +": " + troncos.getPuntos(), 0.1f, viewport.getWorldHeight() - 0.1f);
+        font.draw(batch, Idiomas.t("points") + ": " + troncos.getPuntos(), 0.1f, viewport.getWorldHeight() - 0.1f);
+
+        batch.draw(botonPausa, botonPausaX, botonPausaY, botonPausaSize, botonPausaSize);
 
         batch.end();
     }
@@ -155,5 +194,10 @@ public class PantallaNivelInfinito implements Screen {
         fondoTex2.dispose();
         quokky.dispose();
         troncos.dispose();
+        botonPausa.dispose();
+    }
+
+    public void reanudarJuego() {
+        pausado = false;
     }
 }
