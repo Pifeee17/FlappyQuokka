@@ -1,5 +1,6 @@
 package com.pife.juego.Niveles;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -13,8 +14,12 @@ import com.pife.juego.Obstaculos.TroncosEnrredaderas;
 import com.pife.juego.Pantallas.PantallaGameOver;
 import com.pife.juego.Pantallas.PantallaVictoria;
 import com.pife.juego.Personajes.Quokky;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.graphics.Texture;
+import com.pife.juego.Menus.MenuPausa;
+import com.pife.juego.Pantallas.Pausable;
 
-public class PantallaNivel3 implements Screen {
+public class PantallaNivel3 implements Screen, Pausable {
 
     private Main game;
     private SpriteBatch batch;
@@ -34,6 +39,16 @@ public class PantallaNivel3 implements Screen {
     //Para evitar que se dibujen obstáculos extra al completar el nivel
     private boolean nivelCompletado = false;
 
+    // Botón pausa
+    private Texture botonPausa;
+    private float botonPausaSize = 0.8f;
+    private float botonPausaX;
+    private float botonPausaY;
+    private boolean pausado = false;
+
+    // Para evitar reinicializar al volver de pausa
+    private boolean inicializado = false;
+
     public PantallaNivel3(Main game) {
         this.game = game;
         viewport = new FitViewport(8, 5);
@@ -41,16 +56,30 @@ public class PantallaNivel3 implements Screen {
 
     @Override
     public void show() {
+
+        if (inicializado) {
+            return;  //evita reiniciar al volver de pausa
+        }
+
+        inicializado = true;
+
         batch = new SpriteBatch();
 
         String idioma = game.getPrefs().getString("idioma", "ES");
         Idiomas.cargar(idioma);
 
-        fondoTex1 = new com.badlogic.gdx.graphics.Texture("Pantallas/Fondo_Piramide.png");
-        fondoTex2 = new com.badlogic.gdx.graphics.Texture("Pantallas/Fondo_Piramide.png");
+        fondoTex1 = new Texture("Pantallas/Fondo_Piramide.png");
+        fondoTex2 = new Texture("Pantallas/Fondo_Piramide.png");
 
         fondo1X = 0f;
         fondo2X = viewport.getWorldWidth();
+
+        // Botón pausa
+        botonPausa = new Texture("Botones/Boton_Pausa.png");
+        botonPausaX = viewport.getWorldWidth() - botonPausaSize - 0.2f;
+        botonPausaY = viewport.getWorldHeight() - botonPausaSize - 0.2f;
+
+        pausado = false;
 
         game.reproducirMusica("MusicaDeFondo/sonido-piramide.mp3");
 
@@ -62,7 +91,6 @@ public class PantallaNivel3 implements Screen {
 
         nivelCompletado = false;
     }
-
     private void update(float delta) {
 
         float nuevoFondo1X = fondo1X - velocidadFondo * delta;
@@ -110,7 +138,24 @@ public class PantallaNivel3 implements Screen {
 
     @Override
     public void render(float delta) {
-        update(delta);
+
+        // Detectar pausa
+        if (Gdx.input.justTouched()) {
+            Vector3 touch = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+            viewport.unproject(touch);
+
+            if (touch.x >= botonPausaX && touch.x <= botonPausaX + botonPausaSize
+                && touch.y >= botonPausaY && touch.y <= botonPausaY + botonPausaSize) {
+
+                pausado = true;
+                game.setScreen(new MenuPausa(game, this));
+                return;
+            }
+        }
+
+        if (!pausado) {
+            update(delta);
+        }
 
         ScreenUtils.clear(0f, 0f, 0f, 1f);
 
@@ -121,8 +166,7 @@ public class PantallaNivel3 implements Screen {
 
         drawFondo();
 
-        //No dibuja obstáculos extra si ya se completó el nivel
-        if (nivelCompletado == false) {
+        if (!nivelCompletado) {
             troncos.draw(batch);
         }
 
@@ -133,13 +177,14 @@ public class PantallaNivel3 implements Screen {
 
         int superados = troncos.getPuntos();
         int cuentaAtras = 15 - superados;
-        if (cuentaAtras < 0) {
-            cuentaAtras = 0;
-        }
+        if (cuentaAtras < 0) cuentaAtras = 0;
 
         font.setColor(Color.WHITE);
         String texto = Idiomas.t("obstacles") + ": " + cuentaAtras;
         font.draw(batch, texto, textoX, textoY);
+
+        // Dibujar botón pausa
+        batch.draw(botonPausa, botonPausaX, botonPausaY, botonPausaSize, botonPausaSize);
 
         batch.end();
     }
@@ -172,5 +217,17 @@ public class PantallaNivel3 implements Screen {
         fondoTex2.dispose();
         quokky.dispose();
         troncos.dispose();
+        botonPausa.dispose();
+    }
+
+    @Override
+    public void reanudarJuego() {
+        pausado = false;
+        font.setColor(Color.WHITE);
+    }
+
+    @Override
+    public Screen reiniciar() {
+        return new PantallaNivel3(game);
     }
 }
