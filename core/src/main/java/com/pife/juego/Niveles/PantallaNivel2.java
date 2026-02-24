@@ -130,6 +130,7 @@ public class PantallaNivel2 implements Screen, Pausable {
 
             // Colisión (solo mientras se juega)
             if (troncos.colisiona(quokky.getHitbox())) {
+                Gdx.input.vibrate(300);
                 game.setScreen(new PantallaGameOver(game, new PantallaNivel2(game), false));
             }
         }

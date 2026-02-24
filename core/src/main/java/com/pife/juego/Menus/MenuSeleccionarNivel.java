@@ -157,7 +157,7 @@ public class MenuSeleccionarNivel implements Screen {
                     Gdx.app.log("NIVEL", "NIVEL 2");
                 } else {
                     Gdx.app.log("BLOQUEADO", "Nivel 2 bloqueado");
-                    Gdx.input.vibrate(200);
+                    Gdx.input.vibrate(300);
                 }
             }else if (btnNivel3.getBoundingRectangle().contains(touch.x, touch.y)) {
 
@@ -166,7 +166,7 @@ public class MenuSeleccionarNivel implements Screen {
                         Gdx.app.log("NIVEL", "NIVEL 3");
                     } else {
                         Gdx.app.log("BLOQUEADO", "Nivel 3 bloqueado");
-                        Gdx.input.vibrate(200);
+                        Gdx.input.vibrate(300);
                     }
             } else if (btnVolver.getBoundingRectangle().contains(touch.x, touch.y)) {
                 game.setScreen(new PantallaSeleccionModos(game));
