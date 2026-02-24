@@ -42,20 +42,25 @@ public class MenuPrincipal implements Screen {
     public void show() {
 
         Gdx.app.log("MENU", "MenuPrincipal cargado");
+// Crear viewport PRIMERO
+        viewport = new FitViewport(5, 8);
+        viewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
 
-        //Musica de Fondo
+// Música
         game.reproducirMusica("MusicaDeFondo/sonido-menu.mp3");
 
-        //Idiomas
+// Idiomas
         String idioma = game.getPrefs().getString("idioma", "ES");
         Idiomas.cargar(idioma);
 
+    // Resetear escala primero
+        font.getData().setScale(0.006f);
+
         batch = new SpriteBatch();
-        layout = new GlyphLayout(); //se usa para centrar el texto
+        layout = new GlyphLayout();
+
         image = new Texture("Pantallas/Portada-Quokky.png");
         im = new Sprite(image);
-
-        viewport = new FitViewport(5, 8);
 
         im.setSize(5f, 8f);
         im.setPosition(0, 0f);
@@ -137,7 +142,6 @@ public class MenuPrincipal implements Screen {
     public void resize(int width, int height) {
         viewport.update(width, height, true);
     }
-
     @Override public void pause() {}
     @Override public void resume() {}
     @Override public void hide() {}

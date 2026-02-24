@@ -5,6 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
@@ -28,6 +29,7 @@ public class MenuSeleccionarNivel implements Screen {
     private SpriteBatch batch;
     private Texture image;
     private Sprite im;
+    private GlyphLayout layout;
 
     private boolean nivel2Desbloqueado, nivel3Desbloqueado;
     private int numero = 1;
@@ -50,11 +52,14 @@ public class MenuSeleccionarNivel implements Screen {
         Idiomas.cargar(idioma);
 
         batch = new SpriteBatch();
+        layout = new GlyphLayout();
 
         image = new Texture("Pantallas/Fondo_Selec_Niveles.png");
         im = new Sprite(image);
 
         viewport = new FitViewport(5, 8);
+
+        font.getData().setScale(0.006f);
 
         im.setSize(5f, 8f);
         im.setPosition(0, 0f);
@@ -121,17 +126,14 @@ public class MenuSeleccionarNivel implements Screen {
         font.draw(batch, Idiomas.t("pick"), 1f, 8f - 1f);
 
         font.setColor(new Color(0.1f, 0.4f, 0.1f, 1f));
-        font.draw(batch, Idiomas.t("level") + " " + numero,
-            btnNivel1.getX() + 1.05f, btnNivel1.getY() + 0.57f);
+        dibujarTextoCentrado(btnNivel1, Idiomas.t("level") + " " + numero);
 
         if (nivel2Desbloqueado) {
-            font.draw(batch, Idiomas.t("level") + " " + (numero + 1),
-                btnNivel2.getX() + 1f, btnNivel2.getY() + 0.57f);
+            dibujarTextoCentrado(btnNivel2, Idiomas.t("level") + " " + (numero + 1));
         }
 
         if (nivel3Desbloqueado) {
-            font.draw(batch, Idiomas.t("level") + " " + (numero + 2),
-                btnNivel3.getX() + 1f, btnNivel3.getY() + 0.57f);
+            dibujarTextoCentrado(btnNivel3, Idiomas.t("level") + " " + (numero + 2));
         }
 
 
@@ -190,4 +192,17 @@ public class MenuSeleccionarNivel implements Screen {
         botonBloqueado.dispose();
         botonVolver.dispose();
     }
+
+    private void dibujarTextoCentrado(Sprite boton, String texto) {
+
+        layout.setText(font, texto);
+
+        float x = boton.getX() + (boton.getWidth() - layout.width) / 2f;
+
+        // Centramos usando la altura total del botón
+        float y = boton.getY() + (boton.getHeight() - layout.height) / 2f + layout.height + 0.05f;;
+
+        font.draw(batch, layout, x, y);
+    }
+
 }

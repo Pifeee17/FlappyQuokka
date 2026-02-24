@@ -5,6 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
@@ -28,7 +29,7 @@ public class PantallaSeleccionModos implements Screen {
     private Texture txtBotonVolver;
     private Sprite btnArcade, btnNiveles, btnVolver;
     private BitmapFont font;
-
+    private GlyphLayout layout;
     public PantallaSeleccionModos(Main game) {
         this.game = game;
         font = game.fuente;
@@ -42,6 +43,10 @@ public class PantallaSeleccionModos implements Screen {
         //Idiomas
         String idioma = game.getPrefs().getString("idioma", "ES");
         Idiomas.cargar(idioma);
+
+        layout = new GlyphLayout();
+
+        font.getData().setScale(0.005f);
 
         fondo = new Texture("Pantallas/Fondo-Select-Modos.png");
         txtBoton = new Texture("Botones/Boton.png");
@@ -74,8 +79,8 @@ public class PantallaSeleccionModos implements Screen {
         font.draw(batch, Idiomas.t("select"), 1.15f, 8f - 1f);
 
         font.setColor(new Color(0.1f,0.4f,0.1f,1));
-        font.draw(batch, Idiomas.t("arcade"), btnArcade.getX() + 1f, btnArcade.getY() + 1.1f);
-        font.draw(batch, Idiomas.t("tipes"), btnNiveles.getX() + 0.6f, btnNiveles.getY() + 1.1f);
+        dibujarTextoCentrado(btnArcade, Idiomas.t("arcade"));
+        dibujarTextoCentrado(btnNiveles, Idiomas.t("tipes"));
         font.draw(batch, Idiomas.t("back"), btnVolver.getX() + 1f, btnVolver.getY() + 0.6f);
         batch.end();
 
@@ -114,5 +119,17 @@ public class PantallaSeleccionModos implements Screen {
         fondo.dispose();
         txtBoton.dispose();
         font.dispose();
+    }
+
+    private void dibujarTextoCentrado(Sprite boton, String texto) {
+
+        layout.setText(font, texto);
+
+        float x = boton.getX() + (boton.getWidth() - layout.width) / 2f;
+
+        // Centramos usando la altura total del botón
+        float y = boton.getY() + (boton.getHeight() - layout.height) / 2f + layout.height + 0.05f;;
+
+        font.draw(batch, layout, x, y);
     }
 }

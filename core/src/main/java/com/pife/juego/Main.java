@@ -33,32 +33,13 @@ public class Main extends Game {
 
         viewport = new FitViewport(5, 8);
 
-        // Preferencias (se guardan en el dispositivo)
         prefs = Gdx.app.getPreferences("ajustes");
 
-        // Fuente
         fuente = new BitmapFont(Gdx.files.internal("Fuente/Early GameBoy.fnt"));
-        fuente.getData().setScale(0.6f);   // Ajusta este valor si la quieres más grande o pequeña
         fuente.setUseIntegerPositions(false);
+        fuente.setColor(Color.WHITE);
 
-
-        if (Gdx.app.getType() == Application.ApplicationType.Android) {
-
-            float dpiScale = Gdx.graphics.getDensity();
-           float factorEscaladoFuente = (viewport.getWorldHeight() / Gdx.graphics.getHeight()) * dpiScale;
-            fuente.getData().setScale(factorEscaladoFuente * Constantes.ESCALADO_ANDROID);
-            fuente.setColor(Color.WHITE);
-
-        } else {
-
-            float dpiScale = Gdx.graphics.getDensity();
-//           float factorEscaladoFuente = (viewport.getWorldHeight() / Gdx.graphics.getHeight()) * dpiScale;
-            float factorEscaladoFuente = (viewport.getWorldHeight() / Gdx.graphics.getHeight()) * dpiScale;
-            fuente.getData().setScale(factorEscaladoFuente * Constantes.ESCALADO_DESKTOP);
-            fuente.setColor(new Color(0.1f,0.4f,0.1f,1));
-        }
-
-        // Mostramos menú principal
+        // 👇 ESTA LÍNEA ES LA QUE FALTA
         setScreen(new MenuPrincipal(this));
     }
 

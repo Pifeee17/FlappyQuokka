@@ -82,6 +82,8 @@ public class PantallaOpciones implements Screen {
         btnIdioma.setBounds(x, yBase - 2.4f, w, h);
         btnVolver.setBounds(x + 0.8f, yBase - 3.6f, 2.2f, 0.5f);
 
+        font.getData().setScale(0.005f);
+
     }
 
     @Override
