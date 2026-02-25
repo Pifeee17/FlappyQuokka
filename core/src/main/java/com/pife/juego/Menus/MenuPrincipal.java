@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.pife.juego.Ayuda.Ayuda1;
 import com.pife.juego.Main;
 import com.pife.juego.Pantallas.PantallaCreditos;
 import com.pife.juego.Pantallas.PantallaNivelInfinito;
@@ -30,7 +31,8 @@ public class MenuPrincipal implements Screen {
     private Texture txtBotones;
 
     private Sprite btnJugar, btnModos, btnOpciones, btnCreditos;
-
+    private Texture txtBotonAyuda;
+    private Sprite btnAyuda;
     private GlyphLayout layout;
 
     public MenuPrincipal(Main game) {
@@ -66,7 +68,11 @@ public class MenuPrincipal implements Screen {
         im.setPosition(0, 0f);
 
         txtBotones = new Texture("Botones/Boton.png");
+        txtBotonAyuda = new Texture("Botones/Boton_Ayuda.png");
+        btnAyuda = new Sprite(txtBotonAyuda);
 
+        // Posición arriba derecha
+        btnAyuda.setBounds(4.1f, 7f, 0.7f, 0.7f);
         btnJugar = new Sprite(txtBotones);
         btnModos = new Sprite(txtBotones);
         btnOpciones = new Sprite(txtBotones);
@@ -97,6 +103,7 @@ public class MenuPrincipal implements Screen {
         btnModos.draw(batch);
         btnOpciones.draw(batch);
         btnCreditos.draw(batch);
+        btnAyuda.draw(batch);
 
         //Texto centrado
         font.setColor(new Color(0.1f, 0.4f, 0.1f, 1f));
@@ -113,13 +120,21 @@ public class MenuPrincipal implements Screen {
 
             if (btnJugar.getBoundingRectangle().contains(touch.x, touch.y)) {
                 game.setScreen(new PantallaNivelInfinito(game));
-            } else if (btnModos.getBoundingRectangle().contains(touch.x, touch.y)) {
+            }
+            if (btnModos.getBoundingRectangle().contains(touch.x, touch.y)) {
                 game.setScreen(new PantallaSeleccionModos(game));
-            } else if (btnOpciones.getBoundingRectangle().contains(touch.x, touch.y)) {
+            }
+            if (btnOpciones.getBoundingRectangle().contains(touch.x, touch.y)) {
                 game.setScreen(new PantallaOpciones(game));
-            } else if (btnCreditos.getBoundingRectangle().contains(touch.x, touch.y)){
+            }
+            if (btnCreditos.getBoundingRectangle().contains(touch.x, touch.y)){
                 game.setScreen(new PantallaCreditos(game));
             }
+            if(btnAyuda.getBoundingRectangle().contains(touch.x, touch.y)) {
+                game.setScreen(new Ayuda1(game));
+            }
+
+
         }
     }
 
@@ -135,8 +150,6 @@ public class MenuPrincipal implements Screen {
 
         font.draw(batch, layout, x, y);
     }
-
-
 
     @Override
     public void resize(int width, int height) {
