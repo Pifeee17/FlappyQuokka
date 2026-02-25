@@ -122,3 +122,4 @@ ChangeLog Flappy Quokky
 - Corregidos los textos en ayuda.
 - Añadida la memoria al proyecto en un archivo .txt.
 - Corregida una traducción en créditos.
+- Añadido el ChangeLog en un txt.
