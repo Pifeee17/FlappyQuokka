@@ -101,7 +101,9 @@ public class PantallaNivelInfinito implements Screen, Pausable {
         // Colisión
         if (troncos.colisiona(quokky.getHitbox())) {
 
-            Gdx.input.vibrate(300);
+            if (game.getPrefs().getBoolean("vibracionOn", true)) {
+                Gdx.input.vibrate(300);
+            }
 
             int puntosActuales = troncos.getPuntos();
 
