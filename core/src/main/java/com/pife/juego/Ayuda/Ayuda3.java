@@ -87,7 +87,7 @@ public class Ayuda3 implements Screen {
 
         font.setColor(Color.BLACK);
 
-        String texto = Idiomas.t("ayuda3").replace("\\n", "\n");
+        String texto = Idiomas.t("ayuda3");
 
         font.draw(batch,
             texto,
