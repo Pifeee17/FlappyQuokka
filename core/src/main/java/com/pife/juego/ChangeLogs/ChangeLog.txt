@@ -1,0 +1,124 @@
+ChangeLog Flappy Quokky
+
+[ 12 de Enero 2026 ]
+
+- Añadida la pantalla inicial del juego.
+
+[ 13 de Enero 2026 ]
+
+- Ajustes iniciales en la imagen principal.
+
+[ 14 de Enero 2026 ]
+
+- Añadidos los botones (tanto en imagen como en interfaz) a la pantalla inicial.
+- Añadida funcionalidad al botón jugar (no reescala bien la imagen aun).
+
+[ 15 de Enero 2026 ]
+
+- Añadido el movimiento del personaje.
+- Añadido el bucle entre los 2 fondos para dar sensación de movimiento.
+- Añadido el acelerómetro para el moviento en el móvil.
+- Intentando poner los obstaculos (estan mal aparecen raro).
+
+[ 16 de Enero 2026 ]
+
+- Añadida la pantalla de GameOver (no funciona y me toca cambiar la fuente de todas las pantallas).
+- Corregida la pantalla de GameOver (no funciona y me toca cambiar la fuente de todas las pantallas).
+
+[ 19 de Enero 2026 ]
+
+- Cambiando la orientacion de la pantalla, añadido también la fuente (aunque no se ve en los botones).
+
+[ 21 de Enero 2026 ]
+
+- Configurando los botones de la pantalla Game Over (funciona el de reiniciar).
+- Probando a cambiar el icono (ahora tengo que poner el personalizado).
+
+[ 23 de Enero 2026 ]
+
+- Probando a cambiar el icono (ahora tengo que poner el personalizado).
+
+[ 24 de Enero 2026 ]
+
+- Empezando a ordenar las clases por paquetes (puesta la main y las pantallas, tambien el menu).
+
+[ 26 de Enero 2026 ]
+
+- Proyecto ya ordenado (separado por paquetes y clases).
+- Añadida la funcionalidad del boton menu en la pantalla de game over.
+- Añadida la fuente a los botones del menu principal.
+
+[ 27 de Enero 2026 ]
+
+- Añadida la fuente a los botones de la pantalla de seleccion de modos.
+- Añadida la función de volver al menú desde la pantalla de modos.
+
+[ 28 de Enero 2026 ]
+
+- Añadida la animación de volar de la quokka.
+
+[ 29 de Enero 2026 ]
+
+- Añadida la musica de fondo, y la funcionalidad del botón volver en la pantalla de Seleccion de modos.
+- Corregida la musica de fondo, que cuando se desactivaba y se volvia a activar no sonaba la musica de nuevo.
+
+[ 30 de Enero 2026 ]
+
+- Añadido en el manifest la vibración, y cambiada la imagen de la enrredadera.
+- Añadida la nueva imagen del botón.
+
+[ 4 de Febrero 2026 ]
+
+- Traducción de todas las pantallas añadida.
+- Arreglado el problemas con el escalado de la fuente.
+
+[ 6 de Febrero 2026 ]
+
+- Añadidos los iconos del juego (tanto en android como en desktop).
+- Añadidos botones, personajes y fondo para el bioma de nieve, ademas del fondo de seleccionar el nivel.
+- Añadida la pantalla de seleccionar niveles, con el boton del nivel 1 y el volver (el del nivel aun sin funcionalidad) y cambiada el color de la fuente a verde oscuro.
+
+[ 9 de Febrero 2026 ]
+
+- Añadido el nivel 1 (Nivel de nieve).
+- Añadido el nivel 1 (Nivel de nieve), falta que no se dibujen troncos de mas.
+- Añadido el nivel 1 (Nivel de nieve), corregido lo de los pares de obstaculos, ya aparece el numero exacto en el nivel 1.
+
+[ 10 de Febrero 2026 ]
+
+- Corregido el boton de volver de la pantalla opciones.
+- Añadidos los elementos para el nivel de la cueva.
+- Añadido el boton del nivel 2, y un boton que bloquea los niveles.
+- Añadido el nivel 2 (nivel de la cueva).
+
+[ 11 de Febrero 2026 ]
+
+- Subidos los iconos.
+- Añadido el nivel 3 ya con funcionalidad.
+- Areeglado lo del icono de android.
+- Corregida la traduccion de vibracion.
+
+[ 20 de Febrero 2026 ]
+
+- Añadidos los records entre todas las partidas.
+- Cambio del color de los puntos a blanco para que contraste con el fondo.
+- Añadida la pantalla de Creditos y el codigo.
+
+[ 24 de Febrero 2026 ]
+
+- Añadida la pantalla de Pausa a nivel Infinito.
+- Arreglado el tema de la fuetne (problemas entre movil y desktop).
+- Añadida a Interfaz para controlar o menu de Pausa, e configurado xa para o nivel infinito.
+- Añadido el boton de Pausa, ya con funcionalidad en Nivel1.
+- Añadido el boton de Pausa, ya con funcionalidad en Nivel2.
+- Añadido el boton de Pausa, ya con funcionalidad en Nivel3.
+- Puesta mas bonita visualmente la pantalla de GameOver.
+- Añadida la vibración correctamente (tanto en los niveles como en el menu de seleccionar el nivel).
+
+[ 25 de Febrero 2026 ]
+
+- Añadido el botón de ayuda y la funcionalidad del mismo asi como sus pantallas.
+- Añadido la traducción en las pantallas de ayuda.
+- Corregidos los textos en ayuda.
+- Añadida la memoria al proyecto en un archivo .txt.
+- Corregida una traducción en créditos.
