@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.pife.juego.Idiomas.Idiomas;
 import com.pife.juego.Main;
 import com.pife.juego.Menus.MenuPrincipal;
+import com.badlogic.gdx.utils.Align;
 
 public class PantallaCreditos implements Screen {
 
@@ -99,9 +100,13 @@ public class PantallaCreditos implements Screen {
         font.draw(batch, layout, centerX - layout.width / 2f, y8);
 
 
-        // Assets
-        layout.setText(font, "Personaje, Obstaculos\ny Fondos:");
-        font.draw(batch, layout, centerX - layout.width / 2f, y9);
+        font.draw(batch,
+            Idiomas.t("personajeobstaculofondo"),
+            0.3f,      // margen izquierdo
+            y9,
+            4.4f,      // ancho máximo (tu mundo es 5)
+            Align.center,
+            true);     // activa el wrap
 
         layout.setText(font, "ChatGPT y Gemini");
         font.draw(batch, layout, centerX - layout.width / 2f, y10);
