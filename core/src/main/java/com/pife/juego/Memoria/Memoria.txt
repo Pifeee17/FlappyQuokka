@@ -1,0 +1,29 @@
+Memoria
+Al principio pensaba que el juego iba a ser fácil de desarrollar, pero ahora que lo tengo acabado tengo que decir
+que mucho más dificil de lo que pensaba. Mi juego aun era bastante simple es bastante parecido al Flappy Bird
+y para un juego tan sencillo tuve que echar muchas horas para desarrollarlo y que tenga un mínimo funcionamiento.
+
+Para el desarrollo del juego utilicé Android Studio, aunque la mayoría está intentado por mi también hay cosas
+en las que empregué IA (Chat GPT).
+
+Al empezar mi trabajo la verdad que tenia todo el código distrubuido en pocas clases pero a medida que fui avanzando
+me di cuenta de que así, a parte de estar mal, iba a ser muy lioso en cuento a código, por lo qué preferí volver a empezar distribuyéndolo
+en muchas clases y paquetes.
+
+Para la creación de imagenes utilicé  IA (CHat GPT y Gemini) y la verdad que no tuve ninguna complicación, si que es verdad
+que alguna imagen le costaba más que otra pero con paciencia pude sacarlas todas.
+
+La dificultad principal, fue que el juego se ejecutase de forma correcta en Android, si que es verdad que en desktop se me ejecutaba
+de forma correcta, pero al ponerlo en el móvil la fuente no se me reescalaba. Fue el error que más tarde en corregir.
+
+El paso en pantallas no me causó dificultad la verdad, ya más o menos tenia una idea de como hacerlo, después de lo que
+vimos de temario del primer trimestre en este curso.
+
+Traté de cubrir principalmente lo requisitos mínimos que ponía en las instrucciones del proyecto y pienso que finalmente lo conseguí,
+me basé siguiendo en lo que subí como mi anteproyecto, que cuando lo hice más o menos intenté que las cubriese.
+
+En un futuro me gustaría subir el juego a la app store, pero aun tengo que intentar hacer algunas modificaciones como
+que se pueda ejecutar también en forma vertical, añadir algunos niveles más...
+
+Como conclusión, tengo que decir que desarrollar el juego me gustó mucho, aunque fuera costoso, tengo que decir que aprendí
+muchas cosas de LibGDX que me pueden ser útiles en un futuro.
