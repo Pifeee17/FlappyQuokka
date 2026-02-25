@@ -15,6 +15,7 @@ import com.badlogic.gdx.Input;
 import com.pife.juego.Idiomas.Idiomas;
 import com.pife.juego.Main;
 import com.pife.juego.Menus.MenuPrincipal;
+import com.badlogic.gdx.utils.Align;
 
 public class Ayuda2 implements Screen {
 
@@ -86,13 +87,15 @@ public class Ayuda2 implements Screen {
 
         font.setColor(Color.BLACK);
 
-        String texto = "Gira el dispositivo\nhacia la derecha\npara ascender el personaje.";
+        String texto = Idiomas.t("ayuda2").replace("\\n", "\n");
 
-        layout.setText(font, texto);
-        font.draw(batch, layout,
-            (5 - layout.width) / 2f,   // centrado horizontal
-            2.5f);                     // posición vertical
-
+        font.draw(batch,
+            texto,
+            0.3f,      // margen izquierdo
+            2.8f,      // altura
+            4.4f,      // ancho máximo del texto (IMPORTANTE)
+            Align.center,
+            true);     // activa el wrap automático
 
         if (mostrarBoton) {
 
